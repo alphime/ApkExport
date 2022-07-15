@@ -63,7 +63,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MainActivity extends AppCompatActivity {
     private int totalAppsNum;
-    // 0 所有应用， 1 系统应用， 2 用户应用
+    /**
+     * 0 所有应用， 1 系统应用， 2 用户应用
+     **/
     private int flag = -1;
     private PopupMenu popupMenu;
     private ListView listView;
@@ -91,11 +93,18 @@ public class MainActivity extends AppCompatActivity {
     private static OnRunningActivityResult activityResultEvent;
     private int sortType;
     /**
+     * 0为无，1为apk大小，2为app大小
+     **/
+    private int delaySync;
+    /**
      * 包名检索，@检索，.aab检索aab
      */
     private final boolean[] searchPerformance = new boolean[3];
     public static ActivityResultLauncher<Intent> intentActivityResultLauncher;
     private FrameLayout mSearch_bar;
+    /** 搜索结果的集合 **/
+    private List<PackageInfo> rs;
+    private ImageView mBtn_syncApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +214,10 @@ public class MainActivity extends AppCompatActivity {
                     sortType = 0;
                     return false;
             }
-            updateSort(getPackageInfos());
+            if (rs == null) {
+                updateSort(getPackageInfos());
+            } else
+                updateSort(rs);
             item.setChecked(true);
             listAdapter.notifyDataSetChanged();
         }
@@ -218,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.lv);
         mProgressBar = findViewById(R.id.progressFrame);
         ExtractApp.initProgressBar(findViewById(R.id.progressbar_extract));
-        ImageView mBtn_syncApps = findViewById(R.id.syncApps);
+        mBtn_syncApps = findViewById(R.id.syncApps);
         mSearch_bar = findViewById(R.id.search_bar);
         listScrollListener = new ListScrollListener((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
         mEdit_bar = findViewById(R.id.et_search);
@@ -388,9 +400,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 搜索
+     */
     private synchronized void searchMethod(CharSequence s) {
         @SuppressLint("SetTextI18n") Runnable runnable = () -> {
-            List<PackageInfo> rs;
             List<PackageInfo> packageInfos = getPackageInfos();
             if (packageInfos == null) {
                 searchMethod(s);
@@ -432,7 +446,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             } else {
-                rs = getPackageInfos();
+                if (rs != null)
+                    rs.clear();
+                rs = null;
             }
             if (rs != null) {
                 boolean finalSearchLibType = searchLibType;
@@ -444,29 +460,31 @@ public class MainActivity extends AppCompatActivity {
                     int size = rs.size();
                     listView.setVisibility(View.VISIBLE);
                     listAdapter.update(rs);
-                    if (size != packageInfos.size()) {
-                        mtv_search_rs_count.setVisibility(View.VISIBLE);
-                        if (finalSearchLibType) {
-                            mtv_search_rs_count.setText(finalStr_a + "：" + size + " / " + finalAbi);
-                        } else if (finalSdk > 0) {
-                            mtv_search_rs_count.setText("SDK" + finalSdk + "的应用有" + size + "个");
-                        } else if (finalSearchAboutAbi) {
-                            String strType;
-                            if (finalStr_a.equals("abi")) {
-                                strType = "原生库的";
-                            } else {
-                                strType = "无原生库";
-                            }
-                            mtv_search_rs_count.setText(strType + "应用有" + size + "个");
+                    mtv_search_rs_count.setVisibility(View.VISIBLE);
+                    if (finalSearchLibType) {
+                        mtv_search_rs_count.setText(finalStr_a + "：" + size + " / " + finalAbi);
+                    } else if (finalSdk > 0) {
+                        mtv_search_rs_count.setText("SDK" + finalSdk + "的应用有" + size + "个");
+                    } else if (finalSearchAboutAbi) {
+                        String strType;
+                        if (finalStr_a.equals("abi")) {
+                            strType = "原生库的";
                         } else {
-                            mtv_search_rs_count.setText(getString(R.string.search_result_count, size));
+                            strType = "无原生库";
                         }
+                        mtv_search_rs_count.setText(strType + "应用有" + size + "个");
                     } else {
-                        mtv_search_rs_count.setText(null);
-                        mtv_search_rs_count.setVisibility(View.INVISIBLE);
+                        mtv_search_rs_count.setText(getString(R.string.search_result_count, size));
                     }
+                    mBtn_syncApps.setVisibility(View.INVISIBLE);
                 });
-            }
+            } else
+                runOnUiThread(() -> {
+                    listAdapter.update(getPackageInfos());
+                    mtv_search_rs_count.setText(null);
+                    mtv_search_rs_count.setVisibility(View.INVISIBLE);
+                    mBtn_syncApps.setVisibility(View.VISIBLE);
+                });
         };
         new Thread(runnable).start();
     }
@@ -541,6 +559,8 @@ public class MainActivity extends AppCompatActivity {
                             });
                         }
                     }
+                    if (delaySync == 1)
+                        Collections.sort(getPackageInfos(), new MyAppComparator.ApkSizeComparator(apkSize));
                 }
                 synchronized (lock_appSize) {
                     appSize = new HashMap<>();
@@ -552,6 +572,8 @@ public class MainActivity extends AppCompatActivity {
                             appSize.put(packageInfo.packageName, loadAppInfos.getTotalSize());
                         }
                     }
+                    if (delaySync == 2)
+                        Collections.sort(getPackageInfos(), new MyAppComparator.appSizeComparator(appSize));
                 }
                 runOnUiThread(() -> listAdapter.updata_appSizeMap(appSize));        // app占用空间
             }
@@ -602,6 +624,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<PackageInfo> updateSort(List<PackageInfo> packageInfos) {
+        delaySync = 0;
         switch (sortType) {
             case 0:
                 Collections.sort(packageInfos, new MyAppComparator.AppNameComparator(appLabel));
@@ -615,15 +638,17 @@ public class MainActivity extends AppCompatActivity {
             case 3:
                 synchronized (lock_apkSize) {
                     if (apkSize != null) {
-                        Collections.sort(getPackageInfos(), new MyAppComparator.ApkSizeComparator(apkSize));
-                    }
+                        Collections.sort(packageInfos, new MyAppComparator.ApkSizeComparator(apkSize));
+                    } else
+                        delaySync = 1;
                 }
                 break;
             case 4:
                 synchronized (lock_appSize) {
                     if (appSize != null) {
                         Collections.sort(packageInfos, new MyAppComparator.appSizeComparator(appSize));
-                    }
+                    } else
+                        delaySync = 2;
                 }
                 break;
             case 5:
@@ -655,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = new TextView(this);
         tv.setTextSize(18);
         tv.setPadding(50, 30, 50, 20);
-        tv.setText("-- 致用户：\n感谢您陪伴了Apk Export应用" + day +"天；Apk Export离不开大家的支持！本应用承诺不会加入任何广告的，因为作者也不喜欢广告，喜欢做纯净的应用；同时作者也会利用业余时间来更新优化app的，如果你喜欢这个应用，欢迎支持下作者！捐赠是对软件的良性循环做出贡献！\n做App不易，感谢大家的支持！");
+        tv.setText("-- 致用户：\n感谢您陪伴了Apk Export应用" + day + "天；Apk Export离不开大家的支持！本应用承诺不会加入任何广告的，因为作者也不喜欢广告，喜欢做纯净的应用；同时作者也会利用业余时间来更新优化app的，如果你喜欢这个应用，欢迎支持下作者！捐赠是对软件的良性循环做出贡献！\n做App不易，感谢大家的支持！");
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("感谢有你")
                 .setView(tv)
