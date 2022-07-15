@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryVariant"
+            android:theme="@style/Toolbar"
+            app:subtitleTextColor="@color/white"
+            app:titleTextColor="@color/white"
+            app:title="@string/app_name"/>
+
+        <include
+            android:id="@+id/search_bar"
+            layout="@layout/view_search"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressbar_extract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-7dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <!-- 状态信息栏 -->
+        <RelativeLayout
+            android:id="@+id/status_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginVertical="3dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/appsInfo"
+                android:background="@drawable/lightgray_corners_drawable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="106dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="2dp"
+                android:text="@string/loadstr"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/search_rs_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_toStartOf="@+id/syncApps"
+                android:paddingTop="2dp"
+                android:paddingBottom="4dp"
+                android:textColor="@android:color/holo_blue_light"
+                android:visibility="gone" />
+
+
+            <ImageView
+                android:id="@+id/syncApps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:src="@android:drawable/stat_notify_sync"
+                app:tint="@android:color/darker_gray"
+                android:contentDescription="@string/sync"/>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:layout_below="@id/status_bar"
+            android:choiceMode="multipleChoiceModal" />
+
+        <FrameLayout
+            android:id="@+id/progressFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/progressbar_bg"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@android:color/holo_blue_light" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

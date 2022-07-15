@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bottom_bg"
+    android:orientation="vertical"
+    android:paddingStart="30dp"
+    android:paddingTop="14dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/appName"
+                style="?android:attr/textAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:selectAllOnFocus="true"
+                android:textIsSelectable="true"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pkgName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:selectAllOnFocus="true"
+                android:textIsSelectable="true" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/app_Version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/left_bracket" />
+
+                    <TextView
+                        android:id="@+id/app_VersionCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/right_bracket" />
+                </LinearLayout>
+            </com.google.android.material.chip.ChipGroup>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/apksize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_appsize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/appTargetSdk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/split_aab"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/aab"
+                        android:src="@drawable/aab" />
+
+                    <ImageView
+                        android:id="@+id/flag_xapk"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="8dp"
+                        android:contentDescription="@string/xapk"
+                        android:src="@drawable/xapk_icon" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/app_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_minSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:textColor="@android:color/holo_blue_light" />
+
+        <TextView
+            android:id="@+id/sysApps_lib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sysapp"
+            android:textColor="@android:color/holo_blue_light" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_firstInstall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tv_lastUpdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="4pt"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="34dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/extract_app"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="66dp"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/oval_button"
+            android:padding="6dp"
+            android:text="@string/extract"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/share_app"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="66dp"
+            android:layout_height="65dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/oval_button"
+            android:text="@string/shareApp"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/app_DetailsSettings"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="66dp"
+            android:layout_height="65dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/oval_button"
+            android:text="@string/goto_detailsSettings"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/md5_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:singleLine="true"
+        android:text="@string/md5_loading"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_reminder" />
+
+        <TextView
+            android:id="@+id/save_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
+</LinearLayout>

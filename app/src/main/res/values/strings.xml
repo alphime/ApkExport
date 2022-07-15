@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Apk Export</string>
+    <string name="allapps">所有应用</string>
+    <string name="sysapps">系统应用</string>
+    <string name="userapps">用户应用</string>
+    <string name="loadstr">正在加载 . . . </string>
+    <string name="left"><![CDATA[<]]></string>
+    <string name="search_reminder">请输入关键字</string>
+    <string name="sysapp">系统应用</string>
+    <string name="search_result_count">查询到%d个APP</string>
+    <string name="reqStorage">申请”存储权限”以便于您可以通过本App备份应用</string>
+    <string name="reqAppUsage">申请用户使用情况，可获取APP总占用空间</string>
+    <string name="req_queryAllApp">申请获取全部应用</string>
+    <string name="entryapp">进入APP</string>
+    <string name="welcome">欢迎使用</string>
+    <string name="reminder">您在使用本App使用过程中可能需要以下权限：</string>
+    <string name="save_reminder">温馨小提示：</string>
+    <string name="shareApp">分享</string>
+    <string name="extract">提取</string>
+    <string name="sort_by_appname">按应用名称排序</string>
+    <string name="sort_by_pkg_name">按应用包名排序</string>
+    <string name="sort_by_apksize">按安装包大小排序</string>
+    <string name="sort_by_appsize">按APP占用空间排序</string>
+    <string name="sort_by_first_install_data">按初次安装排序</string>
+    <string name="sort_by_updata">按最近更新排序</string>
+    <string name="left_bracket">(</string>
+    <string name="right_bracket">)</string>
+    <string name="goto_detailsSettings">详情</string>
+    <string name="sysapp_num"><![CDATA[系统应用（%d / %d）]]></string>
+    <string name="sysapp_update_num"><![CDATA[已更新的系统应用（%d / %d）]]></string>
+    <string name="userapp_num"><![CDATA[用户应用（%d / %d）]]></string>
+    <string name="allapp_num">所有应用（%d）</string>
+    <string name="target_sdk">Target SDK</string>
+    <string name="title_activity_settings">设置</string>
+
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+    <string name="sort_by_sdk">按软件SDK版本排序</string>
+    <string name="disablePermissionReminder">不再显示权限提醒界面</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="sync">同步</string>
+    <string name="app_icon">app图标</string>
+    <string name="aab">App Bundle</string>
+    <string name="Donation">捐赠</string>
+    <string name="support_me">为开发者买个汉堡加可乐呗</string>
+    <string name="no_exist_app">此设备不存在该软件</string>
+    <string name="reqVisitObbDir">此应用类型为xapk，需要提取应用的*.obb\n文件；由于Android 11 权限限制，您需要授权obb目录访问权限才能进行操作！</string>
+    <string name="xapk">xapk</string>
+    <string name="md5_loading">MD5：\t正在计算中…\t\t\t\t</string>
+    <string name="save_picture">保存图片</string>
+    <string name="mailto_author">给开发者发邮件</string>
+    <string name="howto_install_apks">如何安装.xapk和.apks文件？</string>
+    <string name="uninstall">卸载</string>
+    <string name="send">分享</string>
+    <string name="selectAll">全选</string>
+    <string name="za_parite">提示：您可能是ZArchiver的盗版应用受害者，建议到play商店下载正版应用！</string>
+    <string name="str_search">搜索</string>
+    <string name="str_settings">设置</string>
+    <string name="clearKeyWords">清除搜索关键字</string>
+    <string name="accredit">已授权</string>
+    <string name="unauthorizedAndRequest">未授权，点击跳转申请</string>
+    <string name="unauthorized">未授权</string>
+
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+</resources>

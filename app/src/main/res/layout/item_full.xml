@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/app_Version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="13sp" />
+
+    <!--  大小、更新时间  -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_apksize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="10dp"
+            android:minWidth="60dp"
+            android:singleLine="true"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_appsize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@id/tv_installDate"
+            android:layout_toEndOf="@id/tv_apksize"
+            android:singleLine="true"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_installDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:singleLine="true"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <!--  SDK信息、支持的安卓版本、lib  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--  TargetSDK  -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="@string/target_sdk"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/appTargetSdk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/appMinSdk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/libType"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="普通搜索">
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:title="启用包名检索"
+            app:summaryOn="根据应用名和应用包名搜索"
+            app:summaryOff="只根据应用名搜索"
+            app:key="key_search_pkg"
+            app:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="高级搜索">
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:title="App Bundle 检索"
+            app:key="key_search_aab"
+            app:summary="输入 ..abb 以搜索App Bundle的应用"
+            app:defaultValue="true"/>
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:title="启用 @_ 检索"
+            app:key="key_search_at"
+            app:summaryOn="输入“@29”或“@arm64”试试呗"
+            app:summaryOff="启用@关键字的高级搜索"
+            app:defaultValue="true"/>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,55 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\alphi\\alphi.jks')
+            storePassword '204200'
+            keyAlias 'alphi'
+            keyPassword '204200'
+        }
+    }
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.alphi.myapps"
+        minSdk 22
+        targetSdk 32
+        versionCode day()
+        versionName "1.26"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+def static day(){
+    Date date = new Date();
+    return Integer.parseInt(new SimpleDateFormat("yyyyMMdd").format(date))
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // debugImplementation because LeakCanary should only run in debug builds.
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+//    androidTestImplementation 'androidx.recyclerview:recyclerview:1.2.1'
+}

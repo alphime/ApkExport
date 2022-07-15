@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppNoActionBar" parent="Theme.MyApplication">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--    actionBar覆盖xml布局界面    -->
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Toolbar">
+        <item name="colorControlNormal">@color/white</item>
+        <!--  因为Material的默认radio图标右内边距太大，采用自定义Material方法  -->
+        <item name="radioButtonStyle">@style/MaterialRadioButton</item>
+    </style>
+
+    <!--  采用继承AppCompat的radioButton，并设置居中和按钮颜色  -->
+    <style name="MaterialRadioButton" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:gravity">center</item>
+        <!--  Material 白  -->
+        <item name="enforceMaterialTheme">true</item>
+        <item name="useMaterialThemeColors">true</item>
+    </style>
+
+
+    <style name="supportTheme" parent="Theme.MyApplication">
+        <item name="android:windowAnimationStyle">@style/fade_anim</item>
+    </style>
+
+    <style name="fade_anim">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+    </style>
+</resources>

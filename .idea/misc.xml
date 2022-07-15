@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable-night/dialog_bg.xml" value="0.1025" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable-night/dialog_bottom_bg.xml" value="0.123" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1025" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/appicon_round.xml" value="0.1515" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/dialog_bg.xml" value="0.1025" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/fastscroll_thumb.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/ic_extract.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1025" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/ic_search.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/ic_settinginfo.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/ic_share.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/layout_divider.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/lightgray_corners_drawable.xml" value="0.123" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/oval_button.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/progressbar.xml" value="0.114" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/radio_tint.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/round_button.xml" value="0.1605" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/shadow.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/textview_border.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/thumb.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/underline_drawable.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/white_line.xml" value="0.1025" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout-v23/activity_main.xml" value="0.12239583333333333" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/action_mode_bar.xml" value="0.6" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/activity_main.xml" value="0.2013888888888889" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/activity_permission.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/activity_settings.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/dialog_author.xml" value="0.4185667752442997" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/dialog_content_normal.xml" value="0.5234215885947047" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/edit_search.xml" value="0.12239583333333333" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/fragment_blank.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/fragment_search.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/fragment_support.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/ic_extract.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/item.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/item_full.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/item_lite.xml" value="1.2516447368421053" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/item_style1.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/item_style2.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/settings_activity.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/view_search.xml" value="0.1453125" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/menu/longpress_menu.xml" value="0.11197916666666667" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/menu/main_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/menu/mulitple_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/menu/popup_menu.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1515" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/xml/aaa.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/xml/androidsdkpreferences.xml" value="0.19519927536231885" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/xml/file_paths.xml" value="0.25364583333333335" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/xml/root_preferences.xml" value="0.264" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/xml/search_performance.xml" value="0.25364583333333335" />
+        <entry key="..\:/Program Files/Android/Sdk/platforms/android-31/data/res/drawable/ic_popup_sync.xml" value="0.114" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

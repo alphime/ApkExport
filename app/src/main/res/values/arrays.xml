@@ -1,0 +1,20 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="default_list_flag_values" >
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="default_list_flag_labels">
+        <item>所有应用</item>
+        <item>系统自带应用</item>
+        <item>用户安装的应用</item>
+    </string-array>
+    <!-- Reply Preference -->
+
+    <string-array name="dialog_reminder">
+        <item>备份好的安装包将保存在: %s</item>
+        <item>在备份过程中工具栏下方会有进度条滚动哦 ~</item>
+    </string-array>
+</resources>

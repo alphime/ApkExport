@@ -1,0 +1,97 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="key_lite_mode"
+        app:defaultValue="false"
+        app:summary="简约列表条目的应用参数"
+        app:title="简约模式" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="key_abc_top"
+        app:defaultValue="true"
+        app:title="应用名称排序 汉字和英文置前"
+        app:summaryOn="去选则按照普通排序方式排序"
+        app:summaryOff="选择则采用过滤法将汉字和英文排于前面"/>
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="key_show_md5"
+        app:defaultValue="false"
+        app:title="在展示对话框显示基础包 MD5"
+        app:summaryOn="悄悄告诉你长按 MD5 可以复制哦！"
+        app:summaryOff="开启后将计算应用基础包的 MD5"/>
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="key_show_installData"
+        app:defaultValue="false"
+        android:title="在展示对话框显示安装时间"
+        app:summary="在展示对话框显示应用的初次安装时间和更新时间"/>
+
+    <ListPreference
+        app:iconSpaceReserved="false"
+        app:key="key_default_list_apptype"
+        app:title="进入App默认显示的列表"
+        app:entries="@array/default_list_flag_labels"
+        app:entryValues="@array/default_list_flag_values"
+        app:defaultValue="0"
+        app:summary="设置进入App默认显示列表的应用类型"
+        android:negativeButtonText="关闭"/>
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:title="搜索偏好设置"
+        app:key="key_search_setting"
+        app:summary="设置一些习惯性搜索"/>
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:key="key_backup_path"
+        app:title="备份路径" />
+
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="关于">
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="key_version"
+            app:title="版本号" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="key_permission"
+            app:title="本软件使用权限清单"/>
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:title="作者"
+            app:key="key_author"
+            app:summary="alphime"/>
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:title="支持开发者"
+            app:key="key_support"
+            app:summary="支持一波呗！咱用爱发电，为简而美的软件而生~" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="帮助">
+        <Preference
+            app:iconSpaceReserved="false"
+            app:title="提取出来的 .xapk 和 .apks 如何安装"
+            app:key="key_howto_install_apks"/>
+        <Preference
+            app:iconSpaceReserved="false"
+            app:title="分享"
+            app:key="key_share_this"
+            app:summary="让更多的朋友知道 APK Export"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

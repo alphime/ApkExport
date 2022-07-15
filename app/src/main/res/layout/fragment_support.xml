@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".activity.SupportMeActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="8dp"
+        android:text="@string/support_me"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="20sp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="20dp"
+        app:cardElevation="10dp">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="466dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="@string/Donation"
+            android:src="@drawable/support1" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/save_support_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/save_picture"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+</LinearLayout>
