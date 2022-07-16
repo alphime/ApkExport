@@ -24,7 +24,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -130,21 +133,13 @@ public final class LoadAppInfos {
     }
 
     public boolean hasKotlinLang() {
-        try {
-            ZipFile zipFile = new ZipFile(applicationInfo.sourceDir);
-            ZipEntry entry = zipFile.getEntry("classes.dex");
-            if (entry == null)
-                return false;
-            BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(entry)));
-            while (br.ready()) {
-                String s = br.readLine();
-                int index = 0;
-                if ((index = s.indexOf(".kt")) != -1) {
-                    System.out.println(s);
-                    index += 3;
-                    if (!Character.isLetterOrDigit(s.charAt(index)))
-                        return true;
-                }
+        try (ZipFile zipFile = new ZipFile(applicationInfo.sourceDir)){
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry zipEntry = entries.nextElement();
+                String name = zipEntry.getName();
+                if (name.contains("kotlin/") || Pattern.compile("META-INF/.*?kotlin.*?").matcher(name).matches())
+                    return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
