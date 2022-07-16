@@ -16,12 +16,9 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -44,7 +41,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alphi.myapplication.BuildConfig;
 import com.alphi.myapplication.R;
-import com.alphi.myapplication.Utils.AlphiGestureDetector;
 import com.alphi.myapplication.Utils.LoadAppInfos;
 import com.alphi.myapplication.Utils.MyAppComparator;
 import com.alphi.myapplication.adapter.ListScrollListener;
@@ -53,11 +49,11 @@ import com.alphi.myapplication.adapter.MyListViewAdapter;
 import com.alphi.myapplication.widget.ExtractApp;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -110,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
      **/
     private List<PackageInfo> rs;
     private ImageView mBtn_syncApps;
+    private long search_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -431,15 +428,31 @@ public class MainActivity extends AppCompatActivity {
             if (s.length() > 0) {
                 rs = new ArrayList<>();
                 String str = s.toString();
+                long search_time = System.currentTimeMillis();
+                this.search_time = search_time;
+                runOnUiThread(() -> mtv_search_rs_count.setText("正在搜索..."));
                 for (PackageInfo packageInfo : packageInfos) {
                     loadAppInfos.load(packageInfo);
                     String pkgName = loadAppInfos.getPackageName().toString();
                     if (appLabel.containsKey(packageInfo.packageName) && appLabel.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
+                        if (rs == null || this.search_time != search_time)
+                            return;
                         rs.add(packageInfo);
                     }
-                    if (searchPerformance[2] && str.equals("..aab") && loadAppInfos.isAAB()) {
-                        rs.add(packageInfo);
+                    if (searchPerformance[2]) {
+                        if (str.equals("..aab") && loadAppInfos.isAAB()) {
+                            if (rs == null || this.search_time != search_time)
+                                return;
+                            rs.add(packageInfo);
+                        } else if (str.equals("..kotlin") && loadAppInfos.hasKotlinLang()) {
+                            if (rs == null || this.search_time != search_time) {
+                                return;
+                            }
+                            rs.add(packageInfo);
+                        }
                     } else if (searchPerformance[1] && str.charAt(0) == '@' && str.length() > 2) {
+                        if (rs == null || this.search_time != search_time)
+                            return;
                         if (str_a == null) {
                             str_a = str.substring(1);
                         }
