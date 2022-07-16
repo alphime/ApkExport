@@ -19,13 +19,13 @@
             app:iconSpaceReserved="false"
             app:title="App Bundle 与 kotlin 应用检索"
             app:key="key_search_aab"
-            app:summary="输入 ..abb 或 ..kotlin 试试呗"
+            app:summary="输入 “..abb” 或 “..kotlin” 试试呗"
             app:defaultValue="true"/>
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:title="启用 @_ 检索"
             app:key="key_search_at"
-            app:summaryOn="输入“@29”或“@arm64”试试呗"
+            app:summaryOn="输入 “@29” 或 “@arm64” 试试呗"
             app:summaryOff="启用@关键字的高级搜索"
             app:defaultValue="true"/>
     </PreferenceCategory>
