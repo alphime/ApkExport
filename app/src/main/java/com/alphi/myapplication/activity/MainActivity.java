@@ -450,7 +450,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                             rs.add(packageInfo);
                         }
-                    } else if (searchPerformance[1] && str.charAt(0) == '@' && str.length() > 2) {
+                    }
+                    if (searchPerformance[1] && str.charAt(0) == '@' && str.length() > 2) {
                         if (rs == null || this.search_time != search_time)
                             return;
                         if (str_a == null) {
