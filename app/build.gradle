@@ -16,7 +16,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.alphi.myapps"
+        applicationId "com.alphi.apkexport"
         minSdk 22
         targetSdk 32
         versionCode day()

@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
     private PopupMenu popupMenu;
     private ListView listView;
     private TextView mAppsInfo;
+    /**
+     * 小圆圈进度条
+     */
     private FrameLayout mProgressBar;
     private boolean isSyncApps = true;
     private List<PackageInfo> sysAppsPackage;
@@ -102,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
     private final boolean[] searchPerformance = new boolean[3];
     public static ActivityResultLauncher<Intent> intentActivityResultLauncher;
     private FrameLayout mSearch_bar;
-    /** 搜索结果的集合 **/
+    /**
+     * 搜索结果的集合
+     **/
     private List<PackageInfo> rs;
     private ImageView mBtn_syncApps;
 
@@ -313,10 +318,19 @@ public class MainActivity extends AppCompatActivity {
                                 case R.id.AllApps:
                                     flag = 0;
                             }
-                            mProgressBar.setVisibility(View.VISIBLE);
-                            mtv_search_rs_count.setText(null);
-                            mtv_search_rs_count.setVisibility(View.INVISIBLE);
-                            new Thread(new mRunnable()).start();
+                            String search_key_cache;
+                            if (mEdit_bar != null)
+                                search_key_cache = mEdit_bar.getText().toString();
+                            else
+                                search_key_cache = null;
+                            if (search_key_cache == null || search_key_cache.isEmpty() || rs == null) {
+                                mProgressBar.setVisibility(View.VISIBLE);
+                                mtv_search_rs_count.setText(null);
+                                mtv_search_rs_count.setVisibility(View.INVISIBLE);
+                                new Thread(new mRunnable()).start();
+                            } else {
+                                searchMethod(search_key_cache);
+                            }
                             return true;
                         }
                     });
