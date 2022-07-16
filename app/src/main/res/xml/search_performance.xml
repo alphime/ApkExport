@@ -17,9 +17,9 @@
         app:title="高级搜索">
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
-            app:title="App Bundle 检索"
+            app:title="App Bundle 与 kotlin 应用检索"
             app:key="key_search_aab"
-            app:summary="输入 ..abb 以搜索App Bundle的应用"
+            app:summary="输入 ..abb 或 ..kotlin 试试呗"
             app:defaultValue="true"/>
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
