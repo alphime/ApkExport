@@ -28,8 +28,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +43,6 @@ import com.alphi.myapplication.R;
 import com.alphi.myapplication.Utils.ExtractFile;
 import com.alphi.myapplication.Utils.LoadAppInfos;
 import com.alphi.myapplication.Utils.MD5Utils;
-import com.alphi.myapplication.activity.MainActivity;
 import com.alphi.myapplication.widget.ExtractApp;
 import com.alphi.myapplication.widget.OnClickEvent;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -49,10 +51,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 public class AppOperaViewDialog extends BottomSheetDialog {
@@ -121,8 +125,6 @@ public class AppOperaViewDialog extends BottomSheetDialog {
         TextView tv_pkg = contentView.findViewById(R.id.pkgName);
         TextView tv_versionName = contentView.findViewById(R.id.app_Version);
         TextView tv_versionCode = contentView.findViewById(R.id.app_VersionCode);
-        ImageView aab = contentView.findViewById(R.id.split_aab);
-        ImageView flag_xapk = contentView.findViewById(R.id.flag_xapk);
         TextView tv_size = contentView.findViewById(R.id.apksize);
         TextView tv_sdk = contentView.findViewById(R.id.appTargetSdk);
         ImageView mAppIcon = contentView.findViewById(R.id.appIcon);
@@ -154,22 +156,66 @@ public class AppOperaViewDialog extends BottomSheetDialog {
         }
         String apkSizeStr = getSize(apkSize);
         tv_size.setText(apkSizeStr);
-        tv_sdk.setText("SDK: " + applicationInfo.targetSdkVersion);
+        int sdkVersion = applicationInfo.targetSdkVersion;
+        tv_sdk.setText("SDK: " + sdkVersion);
+        tv_sdk.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                try (InputStream in = getContext().getAssets().open("android-version_map.properties")){
+                    Properties properties = new Properties();
+                    properties.load(in);
+                    Toast.makeText(getContext(), "SDK " + sdkVersion + " 基于 " + properties.getProperty(String.valueOf(sdkVersion)), Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        });
         if (appIcons != null) {
             mAppIcon.setImageBitmap(appIcons.get(packageName));
         } else {
             mAppIcon.setImageBitmap(loadAppInfos.getBitmapIcon());
         }
         if (loadAppInfos.isAAB()) {
+            ImageView aab = contentView.findViewById(R.id.split_aab);
             aab.setVisibility(View.VISIBLE);
-        } else {
-            aab.setVisibility(View.GONE);
+            aab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupWindow popupWindow = new PopupWindow(900, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    TextView tv = new TextView(getContext());
+                    tv.setText(R.string.aab_introduce);
+                    tv.setPadding(20, 10, 20, 20);
+                    popupWindow.setContentView(tv);
+                    popupWindow.setBackgroundDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.popwindow_bg));
+                    setPopWindowLocation(popupWindow, aab);
+                    popupWindow.setOutsideTouchable(true);
+                    popupWindow.update();
+                }
+            });
+        }
+        if (loadAppInfos.hasKotlinLang()) {
+            ImageView kotlin_img = contentView.findViewById(R.id.flag_kotlin);
+            kotlin_img.setVisibility(View.VISIBLE);
+            kotlin_img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupWindow popupWindow = new PopupWindow(900, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    TextView tv = new TextView(getContext());
+                    tv.setText("Kotlin 由 JetBrains 开发的一个用于现代多平台应用的静态编程语言");
+                    tv.setPadding(20, 10, 20, 20);
+                    popupWindow.setContentView(tv);
+                    popupWindow.setBackgroundDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.popwindow_bg));
+                    setPopWindowLocation(popupWindow, kotlin_img);
+                    popupWindow.setOutsideTouchable(true);
+                    popupWindow.update();
+                }
+            });
         }
         loadAppInfos.load(packageInfo);
         if (loadAppInfos.isXApk()) {
+            ImageView flag_xapk = contentView.findViewById(R.id.flag_xapk);
             flag_xapk.setVisibility(View.VISIBLE);
-        } else {
-            flag_xapk.setVisibility(View.GONE);
         }
         mAppIcon.setOnClickListener(new OnClickEvent(new OnClickEvent.OnClickListener() {
             @Override
@@ -355,5 +401,12 @@ public class AppOperaViewDialog extends BottomSheetDialog {
     private boolean isExistApkFile() {
         File file = new File(sourceDir);
         return file.exists();
+    }
+
+    private void setPopWindowLocation(PopupWindow popupWindow, View view) {
+        int[] locate = new int[2];
+        view.getLocationInWindow(locate);
+        int x = Math.min(-4 * locate[0] / 5, -locate[0] + 140);
+        popupWindow.showAsDropDown(view, x, 12);
     }
 }

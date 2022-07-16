@@ -63,6 +63,8 @@
     <string name="accredit">已授权</string>
     <string name="unauthorizedAndRequest">未授权，点击跳转申请</string>
     <string name="unauthorized">未授权</string>
+    <string name="aab_introduce">Android App Bundle 是 Google 公司新推出的一种官方发布格式，用于减少应用的包大小，是由一个完整的apk安装包拆分为多个apk文件组成的，又称Split APKs</string>
+    <string name="include_kotlin_lang">include Kotlin Lang</string>
 
     <!-- Preference Titles -->
 

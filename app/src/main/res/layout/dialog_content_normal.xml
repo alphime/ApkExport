@@ -72,50 +72,6 @@
                 </LinearLayout>
             </com.google.android.material.chip.ChipGroup>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/apksize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp" />
-
-                <TextView
-                    android:id="@+id/tv_appsize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp" />
-
-                <TextView
-                    android:id="@+id/appTargetSdk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp" />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/split_aab"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginStart="10dp"
-                        android:contentDescription="@string/aab"
-                        android:src="@drawable/aab" />
-
-                    <ImageView
-                        android:id="@+id/flag_xapk"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginStart="8dp"
-                        android:contentDescription="@string/xapk"
-                        android:src="@drawable/xapk_icon" />
-                </FrameLayout>
-            </LinearLayout>
         </LinearLayout>
 
         <ImageView
@@ -125,6 +81,58 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:contentDescription="@string/app_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/apksize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/tv_appsize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/appTargetSdk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp" />
+
+        <ImageView
+            android:id="@+id/split_aab"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/aab"
+            android:src="@drawable/aab"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/flag_xapk"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/xapk"
+            android:src="@drawable/xapk_icon"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/flag_kotlin"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/include_kotlin_lang"
+            android:paddingTop="2dp"
+            android:src="@drawable/kotlin"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.alphi.myapplication.R;
 import com.alphi.myapplication.activity.SupportMeActivity;
@@ -67,6 +68,7 @@ public class AuthorDialog extends BottomSheetDialog {
             getContext().startActivity(intent);
             dismiss();
         });
+
         linearLayout.addView(title);
         linearLayout.addView(tv_mailto);
         linearLayout.addView(tv_coolApk);

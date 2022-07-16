@@ -17,6 +17,7 @@
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/layout_divider.xml" value="0.1125" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/lightgray_corners_drawable.xml" value="0.123" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/oval_button.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/popwindow_bg.xml" value="0.1345" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/progressbar.xml" value="0.114" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/radio_tint.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/drawable/round_button.xml" value="0.1605" />
@@ -31,7 +32,7 @@
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/activity_permission.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/activity_settings.xml" value="0.1125" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/dialog_author.xml" value="0.4185667752442997" />
-        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/dialog_content_normal.xml" value="0.5234215885947047" />
+        <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/dialog_content_normal.xml" value="0.46555323590814196" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/edit_search.xml" value="0.12239583333333333" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/fragment_blank.xml" value="0.25364583333333335" />
         <entry key="..\:/AndroidStudioProjects/MyApplication3/app/src/main/res/layout/fragment_search.xml" value="0.25364583333333335" />
