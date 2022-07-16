@@ -13,14 +13,14 @@ android {
             keyPassword '204200'
         }
     }
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.alphi.apkexport"
         minSdk 22
-        targetSdk 32
+        targetSdk 33
         versionCode day()
-        versionName "1.26"
+        versionName "1.27"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

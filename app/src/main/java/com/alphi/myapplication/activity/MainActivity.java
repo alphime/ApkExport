@@ -329,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
                                 mtv_search_rs_count.setVisibility(View.INVISIBLE);
                                 new Thread(new mRunnable()).start();
                             } else {
+                                mAppsInfo.setText(getAppsTypeAndNum());
                                 searchMethod(search_key_cache);
                             }
                             return true;
