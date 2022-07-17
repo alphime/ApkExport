@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.alphi.ApkExport" >
+    package="com.alphi.apkexport" >
 
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
@@ -31,11 +31,11 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="r">
         <activity
-            android:name="com.alphi.ApkExport.activity.SettingsActivity"
+            android:name="com.alphi.apkexport.activity.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name="com.alphi.ApkExport.activity.MainActivity"
+            android:name="com.alphi.apkexport.activity.MainActivity"
             android:exported="true"
             android:theme="@style/AppNoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -45,11 +45,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alphi.ApkExport.activity.PermissionActivity"
+            android:name="com.alphi.apkexport.activity.PermissionActivity"
             android:exported="false" >
         </activity>
         <activity
-            android:name="com.alphi.ApkExport.activity.SupportMeActivity"
+            android:name="com.alphi.apkexport.activity.SupportMeActivity"
             android:exported="false"
             android:label="支持开发者"
             android:theme="@style/supportTheme"/>
