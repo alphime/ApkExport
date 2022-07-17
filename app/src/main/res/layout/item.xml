@@ -77,7 +77,7 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <com.alphi.myapplication.widget.MarqueeHorizontalTextView
+            <com.alphi.ApkExport.widget.MarqueeHorizontalTextView
                 android:id="@+id/appPackageName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
