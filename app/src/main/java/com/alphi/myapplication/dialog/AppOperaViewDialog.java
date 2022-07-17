@@ -407,6 +407,6 @@ public class AppOperaViewDialog extends BottomSheetDialog {
         int[] locate = new int[2];
         view.getLocationInWindow(locate);
         int x = Math.min(-4 * locate[0] / 5, -locate[0] + 140);
-        popupWindow.showAsDropDown(view, x, 12);
+        popupWindow.showAsDropDown(view, x, 11);
     }
 }
