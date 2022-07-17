@@ -708,7 +708,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = new TextView(this);
         tv.setTextSize(18);
         tv.setPadding(50, 30, 50, 20);
-        tv.setText("-- 致用户：\n感谢您陪伴了Apk Export应用" + day + "天；Apk Export离不开大家的支持！本应用承诺不会加入任何广告的，因为作者也不喜欢广告，喜欢做纯净的应用；同时作者也会利用业余时间来更新优化app的，如果你喜欢这个应用，欢迎支持下作者！捐赠是对软件的良性循环做出贡献！\n做App不易，感谢大家的支持！");
+        tv.setText(String.format(getString(R.string.donate), day));
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("感谢有你")
                 .setView(tv)
