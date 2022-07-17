@@ -1,6 +1,6 @@
 package com.alphi.apkexport.activity;
 
-import static com.alphi.apkexport.Utils.BitmapUtil.drawableToBitmap150;
+import static com.alphi.apkexport.utils.BitmapUtil.drawableToBitmap150;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.ExtractFile;
+import com.alphi.apkexport.utils.ExtractFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;

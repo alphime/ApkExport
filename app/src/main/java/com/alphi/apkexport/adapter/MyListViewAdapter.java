@@ -1,6 +1,6 @@
 package com.alphi.apkexport.adapter;
 
-import static com.alphi.apkexport.Utils.AlphiFileUtil.getSize;
+import static com.alphi.apkexport.utils.AlphiFileUtil.getSize;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.LoadAppInfos;
+import com.alphi.apkexport.utils.LoadAppInfos;
 import com.alphi.apkexport.dialog.AppOperaViewDialog;
 
 import java.text.SimpleDateFormat;

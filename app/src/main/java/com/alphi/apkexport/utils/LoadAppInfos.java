@@ -1,6 +1,6 @@
-package com.alphi.apkexport.Utils;
+package com.alphi.apkexport.utils;
 
-import static com.alphi.apkexport.Utils.AlphiFileUtil.getLongSize;
+import static com.alphi.apkexport.utils.AlphiFileUtil.getLongSize;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;

@@ -1,4 +1,4 @@
-package com.alphi.apkexport.Utils;
+package com.alphi.apkexport.utils;
 
 import android.annotation.SuppressLint;
 import android.app.usage.StorageStats;

@@ -3,7 +3,7 @@ package com.alphi.apkexport.adapter;
   IDEA 2022/03/18
  */
 
-import static com.alphi.apkexport.Utils.BlackFilter.isPkgBlackFilter;
+import static com.alphi.apkexport.utils.BlackFilter.isPkgBlackFilter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,7 +19,7 @@ import android.widget.AbsListView;
 import android.widget.Toast;
 
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.ShareUtil;
+import com.alphi.apkexport.utils.ShareUtil;
 import com.alphi.apkexport.widget.ExtractApp;
 
 import java.util.ArrayList;

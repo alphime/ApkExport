@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.ExtractFile;
+import com.alphi.apkexport.utils.ExtractFile;
 import com.alphi.apkexport.activity.MainActivity;
 
 import java.io.File;

@@ -3,7 +3,7 @@ package com.alphi.apkexport.dialog;
   IDEA 2022/03/18
  */
 
-import static com.alphi.apkexport.Utils.MD5Utils.getSignaturesMD5;
+import static com.alphi.apkexport.utils.MD5Utils.getSignaturesMD5;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;

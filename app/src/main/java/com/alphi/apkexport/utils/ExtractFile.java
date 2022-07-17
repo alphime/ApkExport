@@ -1,9 +1,9 @@
-package com.alphi.apkexport.Utils;
+package com.alphi.apkexport.utils;
 /*
   IDEA 2022/02/18
  */
 
-import static com.alphi.apkexport.Utils.ZipUtil.zipFile;
+import static com.alphi.apkexport.utils.ZipUtil.zipFile;
 
 import android.os.Environment;
 import android.util.Log;

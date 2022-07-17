@@ -3,13 +3,13 @@ package com.alphi.apkexport.dialog;
   IDEA 2022/02/18
  */
 
-import static com.alphi.apkexport.Utils.AlphiFileUtil.getSize;
-import static com.alphi.apkexport.Utils.BlackFilter.isPkgBlackFilter;
-import static com.alphi.apkexport.Utils.BlackFilter.readPkgBlackFilter;
-import static com.alphi.apkexport.Utils.BlackFilter.writePkgBlackFilter;
-import static com.alphi.apkexport.Utils.MD5Utils.getSignaturesMD5;
-import static com.alphi.apkexport.Utils.ShareUtil.shareApkFile;
-import static com.alphi.apkexport.Utils.ZipUtil.readZip_IsExistFile;
+import static com.alphi.apkexport.utils.AlphiFileUtil.getSize;
+import static com.alphi.apkexport.utils.BlackFilter.isPkgBlackFilter;
+import static com.alphi.apkexport.utils.BlackFilter.readPkgBlackFilter;
+import static com.alphi.apkexport.utils.BlackFilter.writePkgBlackFilter;
+import static com.alphi.apkexport.utils.MD5Utils.getSignaturesMD5;
+import static com.alphi.apkexport.utils.ShareUtil.shareApkFile;
+import static com.alphi.apkexport.utils.ZipUtil.readZip_IsExistFile;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -39,9 +39,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.ExtractFile;
-import com.alphi.apkexport.Utils.LoadAppInfos;
-import com.alphi.apkexport.Utils.MD5Utils;
+import com.alphi.apkexport.utils.ExtractFile;
+import com.alphi.apkexport.utils.LoadAppInfos;
+import com.alphi.apkexport.utils.MD5Utils;
 import com.alphi.apkexport.widget.ExtractApp;
 import com.alphi.apkexport.widget.OnClickEvent;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

@@ -41,8 +41,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.LoadAppInfos;
-import com.alphi.apkexport.Utils.MyAppComparator;
+import com.alphi.apkexport.utils.LoadAppInfos;
+import com.alphi.apkexport.utils.MyAppComparator;
 import com.alphi.apkexport.adapter.ListScrollListener;
 import com.alphi.apkexport.adapter.MultiChoiceModeListener;
 import com.alphi.apkexport.adapter.MyListViewAdapter;

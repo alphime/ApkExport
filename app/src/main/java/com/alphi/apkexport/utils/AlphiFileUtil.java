@@ -1,4 +1,4 @@
-package com.alphi.apkexport.Utils;
+package com.alphi.apkexport.utils;
 /*
   IDEA 2022/02/17
  */

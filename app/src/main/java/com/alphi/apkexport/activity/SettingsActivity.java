@@ -1,6 +1,6 @@
 package com.alphi.apkexport.activity;
 
-import static com.alphi.apkexport.Utils.ShareUtil.shareApkFile;
+import static com.alphi.apkexport.utils.ShareUtil.shareApkFile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.Utils.ExtractFile;
+import com.alphi.apkexport.utils.ExtractFile;
 import com.alphi.apkexport.dialog.AuthorDialog;
 import com.alphi.apkexport.dialog.SplitInstallIntroduceDialog;
 

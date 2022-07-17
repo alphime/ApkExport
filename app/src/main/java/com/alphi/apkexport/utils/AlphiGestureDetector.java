@@ -1,4 +1,4 @@
-package com.alphi.apkexport.Utils;
+package com.alphi.apkexport.utils;
 
 import android.util.Log;
 import android.view.GestureDetector;
