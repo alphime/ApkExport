@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -41,13 +42,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.utils.LoadAppInfos;
-import com.alphi.apkexport.utils.MyAppComparator;
 import com.alphi.apkexport.adapter.ListScrollListener;
 import com.alphi.apkexport.adapter.MultiChoiceModeListener;
 import com.alphi.apkexport.adapter.MyListViewAdapter;
+import com.alphi.apkexport.utils.LoadAppInfos;
+import com.alphi.apkexport.utils.MD5Utils;
+import com.alphi.apkexport.utils.MyAppComparator;
 import com.alphi.apkexport.widget.ExtractApp;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
     private List<PackageInfo> userAppsPackage;
     private MyListViewAdapter listAdapter;
     private List<PackageInfo> allPackageInfos;
-    private Map<String, Long> apkSize;
-    private Map<String, Long> appSize;
-    private Map<String, Bitmap> appIcons;
-    private Map<String, String> appLabel;
     private LoadAppInfos loadAppInfos;
     private TextView mtv_search_rs_count;
     private EditText mEdit_bar;
@@ -106,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private List<PackageInfo> rs;
     private ImageView mBtn_syncApps;
     private long search_time;
+    private Class<?> settingsClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,30 +115,10 @@ public class MainActivity extends AppCompatActivity {
             LoadAppInfos.getAndroidSdk(this);
         }
         initIntentActivityResultLauncher();
-        loadAppInfos = new LoadAppInfos(this);
         initView();
         getPerformance();
-        listAdapter = new MyListViewAdapter(this);
-        listView.setAdapter(listAdapter);
-        listView.setMultiChoiceModeListener(new MultiChoiceModeListener(listAdapter, MainActivity.this));
+        prepareStart();
         new Thread(new mRunnable()).start();
-        try {
-            long firstInstallTime = getPackageManager().getPackageInfo(BuildConfig.APPLICATION_ID, 0).firstInstallTime;
-            int day = preferences.getInt("supportDay", 30);
-            if (day > 0 && System.currentTimeMillis() - firstInstallTime >= 1000L * 60 * 60 * 24 * day) {
-                showSupportDialog(day);
-                if (day == 30) {
-                    preferences.edit().putInt("supportDay", 100).apply();
-                } else if (day == 100) {
-                    preferences.edit().putInt("supportDay", 365).apply();
-                } else {
-                    preferences.edit().putInt("supportDay", -1).apply();
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "初始化出错啦！", Toast.LENGTH_SHORT).show();
-        }
         // 开启app的权限提示
         if (!preferences.getBoolean("disableReminder", false) &&
                 !new PermissionActivity.CheckPermission(this).isGetAllPermission()) {
@@ -178,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (item.getItemId() == R.id.menu_settings) {
             Intent intent = new Intent();
-            intent.setClass(this, SettingsActivity.class);
+            intent.setClass(this, settingsClass);
             startActivity(intent);
             intentClassSimpleName = SettingsActivity.class.getSimpleName();
         } else {
@@ -373,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
             if (key_abc_top != is_abcTop) {
                 MyAppComparator.AppNameComparator.is_abcTop = key_abc_top;
                 if (sortType == 0) {
-                    Collections.sort(getPackageInfos(), new MyAppComparator.AppNameComparator(appLabel));
+                    Collections.sort(getPackageInfos(), new MyAppComparator.AppNameComparator(LoadAppInfos.getAppLabels()));
                 }
             }
             listAdapter.notifyDataSetChanged();
@@ -434,7 +414,8 @@ public class MainActivity extends AppCompatActivity {
                 for (PackageInfo packageInfo : packageInfos) {
                     loadAppInfos.load(packageInfo);
                     String pkgName = loadAppInfos.getPackageName().toString();
-                    if (appLabel.containsKey(packageInfo.packageName) && appLabel.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
+                    Map<String, String> appLabels = LoadAppInfos.getAppLabels();
+                    if (appLabels.containsKey(packageInfo.packageName) && appLabels.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
                         if (rs == null || this.search_time != search_time)
                             return;
                         rs.add(packageInfo);
@@ -564,10 +545,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class mRunnable implements Runnable {
+
         @SuppressLint("SetTextI18n")
         @Override
         public void run() {
             if (isSyncApps) {
+                LoadAppInfos.clearCache();
                 getAppLists();
             }
             listAdapter.isShowFirstInstallTime = false;
@@ -577,31 +560,29 @@ public class MainActivity extends AppCompatActivity {
                     mAppsInfo.setText(getAppsTypeAndNum());
                     mProgressBar.setVisibility(View.GONE);
                     listAdapter.update(updateSort(getPackageInfos()));
-                    listAdapter.updateAppLabel(appLabel);
                 }
             });
             if (isSyncApps) {
                 ArrayList<PackageInfo> packageInfos = new ArrayList<>(allPackageInfos);
                 synchronized (lock_apkSize) {
-                    appIcons = new HashMap<>();
-                    apkSize = new HashMap<>();
+                    Map<String, Bitmap> appIcons = new HashMap<>();
+                    Map<String, Long> apkSize = new HashMap<>();
                     for (int i = 0, packageInfosSize = packageInfos.size(); i < packageInfosSize; i++) {
                         PackageInfo packageInfo = packageInfos.get(i);
                         loadAppInfos.load(packageInfo);
                         appIcons.put(packageInfo.packageName, loadAppInfos.getBitmapIcon());
                         apkSize.put(packageInfo.packageName, loadAppInfos.getApkSize());
                         if (i == (Math.min(packageInfosSize, 18))) {
-                            runOnUiThread(() -> {
-                                listAdapter.updateAppIcons(appIcons);      // app图标
-                                listAdapter.update_apkSizeMap(apkSize);        // apk大小
-                            });
+                            LoadAppInfos.setApkSizeMap(apkSize);
+                            LoadAppInfos.setAppIcons(appIcons);
+                            runOnUiThread(() -> listAdapter.notifyDataSetChanged());
                         }
                     }
                     if (delaySync == 1)
                         Collections.sort(getPackageInfos(), new MyAppComparator.ApkSizeComparator(apkSize));
                 }
                 synchronized (lock_appSize) {
-                    appSize = new HashMap<>();
+                    Map<String, Long> appSize = new HashMap<>();
                     for (int i = 0, packageInfosSize = packageInfos.size(); i < packageInfosSize; i++) {
                         PackageInfo packageInfo = packageInfos.get(i);
                         int flags = packageInfo.applicationInfo.flags;
@@ -612,19 +593,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (delaySync == 2)
                         Collections.sort(getPackageInfos(), new MyAppComparator.appSizeComparator(appSize));
+                    LoadAppInfos.setAppSizeMap(appSize);
+                    runOnUiThread(() -> listAdapter.notifyDataSetChanged());        // app占用空间
                 }
-                runOnUiThread(() -> listAdapter.updata_appSizeMap(appSize));        // app占用空间
             }
             isSyncApps = false;
         }
     }
-
     @SuppressLint("SetTextI18n")
     private synchronized void getAppLists() {
         sysAppsPackage = new ArrayList<>();
         userAppsPackage = new ArrayList<>();
         sysAppUpdatePackage = new ArrayList<>();
-        appLabel = new HashMap<>();
+        Map<String, String> appLabel = new HashMap<>();
         allPackageInfos = getPackageManager().getInstalledPackages(0);
         totalAppsNum = allPackageInfos.size();
         long start = System.currentTimeMillis();
@@ -640,6 +621,7 @@ public class MainActivity extends AppCompatActivity {
                 userAppsPackage.add(packageInfo);
             }
         }
+        LoadAppInfos.setAppLabels(appLabel);
         long end1 = System.currentTimeMillis();
         MyAppComparator.AppNameComparator.is_abcTop = preferences.getBoolean("key_abc_top", false);
         Log.d("耗时", "getAppLists: " + (end1 - start) + "ms");
@@ -661,11 +643,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void prepareStart() {
+        listAdapter = new MyListViewAdapter(this);
+        listView.setAdapter(listAdapter);
+        listView.setMultiChoiceModeListener(new MultiChoiceModeListener(listAdapter, MainActivity.this));
+        loadAppInfos = new LoadAppInfos(this);
+        loadAppInfos.load(BuildConfig.APPLICATION_ID, PackageManager.GET_SIGNATURES);
+        String vf = MD5Utils.getSignaturesMD5(loadAppInfos.getSignatures()[0]);
+        BigInteger big = BigInteger.valueOf(279520937409169L * 3).multiply(new BigInteger("68303496284442867031079"));
+        boolean c624 = vf != null && vf.equals(big.toString());
+        if (!c624) {
+            String s = new String(Base64.decode("5b6I5oqx5q2J77yM5L2g5a6J6KOF6L2v5Lu255qE5piv55uX54mI6L2v5Lu277yB", Base64.DEFAULT));
+            Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+        } else {
+            settingsClass = SettingsActivity.class;
+        }
+        long firstInstallTime = loadAppInfos.getFirstInstallTime();
+        int day = preferences.getInt("supportDay", 30);
+        if (day > 0 && System.currentTimeMillis() - firstInstallTime >= 1000L * 60 * 60 * 24 * day) {
+            if (!c624)
+                System.exit(-1);
+            showSupportDialog(day);
+            if (day == 30) {
+                preferences.edit().putInt("supportDay", 100).apply();
+            } else if (day == 100) {
+                preferences.edit().putInt("supportDay", 365).apply();
+            } else {
+                preferences.edit().putInt("supportDay", -1).apply();
+            }
+        }
+    }
+
     private List<PackageInfo> updateSort(List<PackageInfo> packageInfos) {
         delaySync = 0;
         switch (sortType) {
             case 0:
-                Collections.sort(packageInfos, new MyAppComparator.AppNameComparator(appLabel));
+                Collections.sort(packageInfos, new MyAppComparator.AppNameComparator(LoadAppInfos.getAppLabels()));
                 break;
             case 1:
                 Collections.sort(packageInfos, new MyAppComparator.PackageNameComparator());
@@ -675,16 +688,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 3:
                 synchronized (lock_apkSize) {
-                    if (apkSize != null) {
-                        Collections.sort(packageInfos, new MyAppComparator.ApkSizeComparator(apkSize));
+                    Map<String, Long> apkSizeMap = LoadAppInfos.getApkSizeMap();
+                    if (apkSizeMap != null) {
+                        Collections.sort(packageInfos, new MyAppComparator.ApkSizeComparator(apkSizeMap));
                     } else
                         delaySync = 1;
                 }
                 break;
             case 4:
                 synchronized (lock_appSize) {
-                    if (appSize != null) {
-                        Collections.sort(packageInfos, new MyAppComparator.appSizeComparator(appSize));
+                    Map<String, Long> appSizeMap = LoadAppInfos.getAppSizeMap();
+                    if (appSizeMap != null) {
+                        Collections.sort(packageInfos, new MyAppComparator.appSizeComparator(appSizeMap));
                     } else
                         delaySync = 2;
                 }
@@ -754,8 +769,8 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
-
     public interface OnRunningActivityResult {
+
         void event(ActivityResult result);
     }
 }

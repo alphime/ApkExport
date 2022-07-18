@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -20,7 +21,9 @@ import com.alphi.apkexport.BuildConfig;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -37,6 +40,12 @@ public final class LoadAppInfos {
     private PackageManager packageManager;
     private static Properties apiProperties;
 
+    // 缓存 Map
+    private static Map<String, Long> apkSizeMap;
+    private static Map<String, Long> appSizeMap;
+    private static Map<String, Bitmap> appIcons;
+    private static Map<String, String> appLabels;
+
     public LoadAppInfos(Context context) {
         this.context = context;
         if (context != null) {
@@ -50,15 +59,64 @@ public final class LoadAppInfos {
     }
 
     public void load(CharSequence pkgName) {
+        load(pkgName, 0);
+    }
+
+    public void load(CharSequence pkgName, int flag) {
         try {
-            this.packageInfo = packageManager.getPackageInfo(pkgName.toString(), 0);
+            this.packageInfo = packageManager.getPackageInfo(pkgName.toString(), flag);
             this.applicationInfo = this.packageInfo.applicationInfo;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    public static Map<String, Long> getApkSizeMap() {
+        if (apkSizeMap == null)
+            return null;
+        return Collections.unmodifiableMap(apkSizeMap);
+    }
+
+    public static void setApkSizeMap(Map<String, Long> apkSizeMap) {
+        LoadAppInfos.apkSizeMap = apkSizeMap;
+    }
+
+    public static Map<String, Long> getAppSizeMap() {
+        if (appSizeMap == null)
+            return null;
+        return Collections.unmodifiableMap(appSizeMap);
+    }
+
+    public static void setAppSizeMap(Map<String, Long> appSizeMap) {
+        LoadAppInfos.appSizeMap = appSizeMap;
+    }
+
+    public static Map<String, Bitmap> getAppIcons() {
+        if (appIcons == null)
+            return null;
+        return Collections.unmodifiableMap(appIcons);
+    }
+
+    public static void setAppIcons(Map<String, Bitmap> appIcons) {
+        LoadAppInfos.appIcons = appIcons;
+    }
+
+    public static Map<String, String> getAppLabels() {
+        if (appLabels == null)
+            return null;
+        return Collections.unmodifiableMap(appLabels);
+    }
+
+    public static void setAppLabels(Map<String, String> appLabels) {
+        LoadAppInfos.appLabels = appLabels;
+    }
+
     public String getAppName() {
+        if (appLabels != null) {
+            String label = appLabels.get(applicationInfo.packageName);
+            if (label != null)
+                return label;
+        }
         return applicationInfo.loadLabel(packageManager).toString();
     }
 
@@ -67,6 +125,11 @@ public final class LoadAppInfos {
     }
 
     public Bitmap getBitmapIcon() {
+        if (appIcons != null) {
+            Bitmap bitmap = appIcons.get(applicationInfo.packageName);
+            if (bitmap != null)
+                return bitmap;
+        }
         Drawable drawable = applicationInfo.loadIcon(packageManager);
         return BitmapUtil.drawableToBitmap150(drawable);
     }
@@ -142,6 +205,11 @@ public final class LoadAppInfos {
     }
 
     public long getApkSize() {
+        if (apkSizeMap != null) {
+            Long aLong = apkSizeMap.get(getPackageName());
+            if (aLong != null)
+                return aLong;
+        }
         String[] splitPublicSourceDirs = applicationInfo.splitSourceDirs;
         int length = 0;
         if (splitPublicSourceDirs != null) {
@@ -161,8 +229,21 @@ public final class LoadAppInfos {
     }
 
     public long getTotalSize() {
+        if (appSizeMap != null) {
+            Long aLong = appSizeMap.get(packageInfo.packageName);
+            if (aLong != null)
+                return aLong;
+        }
         GetAppSize getApkSize = new GetAppSize(context, packageInfo.packageName);
         return getApkSize.totalSize;
+    }
+
+    public String getSourceDir() {
+        return applicationInfo.sourceDir;
+    }
+
+    public Signature[] getSignatures() {
+        return packageInfo.signatures;
     }
 
     public long getLastUpdataTime() {
@@ -173,7 +254,38 @@ public final class LoadAppInfos {
         return packageInfo.firstInstallTime;
     }
 
+    public boolean isSystemApp() {
+        return (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+    }
+
+    public boolean isUpdateSysApp() {
+        return (applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 128;
+    }
+
     private File getVirtualXApk() {
         return new File(Environment.getExternalStorageDirectory().getPath() + "/Android/obb/" + packageInfo.packageName + "/main." + packageInfo.versionCode + "." + packageInfo.packageName + ".obb");
+    }
+
+    public PackageInfo getPackageInfo() {
+        return packageInfo;
+    }
+
+    public static void clearCache() {
+        if (appLabels != null) {
+            appLabels.clear();
+            appLabels = null;
+        }
+        if (appIcons != null) {
+            appIcons.clear();
+            appIcons = null;
+        }
+        if (appSizeMap != null) {
+            appSizeMap.clear();
+            appSizeMap = null;
+        }
+        if (apkSizeMap != null) {
+            apkSizeMap.clear();
+            apkSizeMap = null;
+        }
     }
 }

@@ -15,11 +15,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -54,18 +52,11 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
 public class AppOperaViewDialog extends BottomSheetDialog {
-    private final String sourceDir;
-    private final ApplicationInfo applicationInfo;
-    private final Map<String, Long> apkSizeMap;
-    private final Map<String, String> appLabels;
-    private final PackageInfo packageInfo;
-    private final Map<String, Bitmap> appIcons; //app图标Map
-    private final Map<String, Long> appSizeMap;
+    private final LoadAppInfos loadAppInfo;
     private final Handler handler = new Handler();
     private final Thread remind_thread = new Thread(new Runnable() {
         @SuppressLint("SdCardPath")
@@ -98,15 +89,10 @@ public class AppOperaViewDialog extends BottomSheetDialog {
     private TextView tv_save_reminder;
 
     @SuppressLint("SetTextI18n")
-    public AppOperaViewDialog(Context context, PackageInfo packageInfo, Map<String, String> appLabels, Map<String, Bitmap> appIcons, Map<String, Long> apkSizeMap, Map<String, Long> appSizeMap) {
+    public AppOperaViewDialog(Context context, PackageInfo packageInfo) {
         super(context);
-        this.packageInfo = packageInfo;
-        this.applicationInfo = packageInfo.applicationInfo;
-        this.apkSizeMap = apkSizeMap;
-        this.appIcons = appIcons;
-        this.appSizeMap = appSizeMap;
-        this.sourceDir = applicationInfo.sourceDir;
-        this.appLabels = appLabels;
+        this.loadAppInfo = new LoadAppInfos(context);
+        loadAppInfo.load(packageInfo.packageName, PackageManager.GET_SIGNATURES);
     }
 
     @Override
@@ -139,43 +125,32 @@ public class AppOperaViewDialog extends BottomSheetDialog {
         TextView tv_lastUpdate = contentView.findViewById(R.id.tv_lastUpdate);
 
         SharedPreferences preferences = getContext().getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", Context.MODE_PRIVATE);
-        LoadAppInfos loadAppInfos = new LoadAppInfos(getContext());
-        loadAppInfos.load(packageInfo);
-        String packageName = packageInfo.packageName;
-        String appLabel = appLabels.get(packageName);
+        String packageName = loadAppInfo.getPackageName().toString();
+        String appLabel = loadAppInfo.getAppName();
         tv_title.setText(appLabel);
         tv_pkg.setText(packageName);
-        tv_versionName.setText(packageInfo.versionName);
-        tv_versionCode.setText(String.valueOf(packageInfo.versionCode));
-        long apkSize;
-        if (apkSizeMap != null && apkSizeMap.containsKey(packageName)) {
-            apkSize = apkSizeMap.get(packageName);
-        } else {
-            apkSize = loadAppInfos.getApkSize();
-        }
+        tv_versionName.setText(loadAppInfo.getVersionName());
+        tv_versionCode.setText(String.valueOf(loadAppInfo.getVersionCode()));
+        long apkSize = loadAppInfo.getApkSize();
         String apkSizeStr = getSize(apkSize);
         tv_size.setText(apkSizeStr);
-        int sdkVersion = applicationInfo.targetSdkVersion;
+        int sdkVersion = loadAppInfo.getAppLevel();
         tv_sdk.setText("SDK: " + sdkVersion);
-        tv_sdk.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                try (InputStream in = getContext().getAssets().open("android-version_map.properties")){
-                    Properties properties = new Properties();
-                    properties.load(in);
-                    Toast.makeText(getContext(), "SDK " + sdkVersion + " 基于 " + properties.getProperty(String.valueOf(sdkVersion)), Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-        if (appIcons != null) {
-            mAppIcon.setImageBitmap(appIcons.get(packageName));
-        } else {
-            mAppIcon.setImageBitmap(loadAppInfos.getBitmapIcon());
+        try (InputStream in = getContext().getAssets().open("android-version_map.properties")) {
+            Properties properties = new Properties();
+            properties.load(in);
+            String sdk_androidVer = properties.getProperty(String.valueOf(sdkVersion));
+            if (sdk_androidVer != null)
+                tv_sdk.setOnLongClickListener(v -> {
+                    Toast.makeText(getContext(), "SDK " + sdkVersion + " 基于 " + sdk_androidVer, Toast.LENGTH_LONG).
+                            show();
+                    return true;
+                });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        if (loadAppInfos.isAAB()) {
+        mAppIcon.setImageBitmap(loadAppInfo.getBitmapIcon());
+        if (loadAppInfo.isAAB()) {
             ImageView aab = contentView.findViewById(R.id.split_aab);
             aab.setVisibility(View.VISIBLE);
             aab.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +168,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                 }
             });
         }
-        if (loadAppInfos.hasKotlinLang()) {
+        if (loadAppInfo.hasKotlinLang()) {
             ImageView kotlin_img = contentView.findViewById(R.id.flag_kotlin);
             kotlin_img.setVisibility(View.VISIBLE);
             kotlin_img.setOnClickListener(new View.OnClickListener() {
@@ -211,8 +186,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                 }
             });
         }
-        loadAppInfos.load(packageInfo);
-        if (loadAppInfos.isXApk()) {
+        if (loadAppInfo.isXApk()) {
             ImageView flag_xapk = contentView.findViewById(R.id.flag_xapk);
             flag_xapk.setVisibility(View.VISIBLE);
         }
@@ -230,17 +204,17 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             }
         }));
         tv_showSys_lib.setVisibility(View.VISIBLE);
-        if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
+        if (loadAppInfo.isSystemApp()) {
             tv_showSys_lib.setText(getContext().getString(R.string.sysapp));
         } else {
-            String libType = loadAppInfos.getLibType();
+            String libType = loadAppInfo.getLibType();
             if (libType != null) {
                 switch (libType) {
                     case "arm64":
                         tv_showSys_lib.setText("arm64-v8a");
                         break;
                     case "arm":
-                        if (readZip_IsExistFile(applicationInfo.sourceDir, "lib/armeabi-v7a/")) {
+                        if (readZip_IsExistFile(loadAppInfo.getSourceDir(), "lib/armeabi-v7a/")) {
                             tv_showSys_lib.setText("armeabi-v7a");
                         } else {
                             tv_showSys_lib.setText("armeabi");
@@ -254,46 +228,31 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            tv_minSupport.setText("支持 " + loadAppInfos.getSupport() + " 及以上的设备");
+            tv_minSupport.setText("支持 " + loadAppInfo.getSupport() + " 及以上的设备");
         } else {
             tv_minSupport.setVisibility(View.GONE);
         }
-        int flags = applicationInfo.flags;
-        if ((flags & ApplicationInfo.FLAG_SYSTEM) != 1 || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 128) {
-            if (appSizeMap != null) {
-                Long size = appSizeMap.get(packageName);
-                if (size != null) {
-                    tv_appsize.setText(getSize(size));
-                } else {
-                    tv_appsize.setText(getSize(loadAppInfos.getTotalSize()));
-                }
-            } else {
-                tv_appsize.setText(getSize(loadAppInfos.getTotalSize()));
-            }
+        if (!loadAppInfo.isSystemApp() || loadAppInfo.isUpdateSysApp()) {
+            tv_appsize.setText(getSize(loadAppInfo.getTotalSize()));
         }
         if (packageName.equals("ru.zdevs.zarchiver")) {
-            try {
-                PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
-                Signature signature = packageInfo.signatures[0];
-                String signaturesMD5 = getSignaturesMD5(signature);
-                if (!signaturesMD5.equals("135313873751656236811883201194340890628")) {
-                    Drawable pirate = AppCompatResources.getDrawable(getContext(),
-                            R.drawable.pirate);
-                    pirate.setBounds(0, 0,
-                            pirate.getIntrinsicWidth() / 3,
-                            pirate.getIntrinsicHeight() / 3);
-                    tv_title.setCompoundDrawables(null, null,
-                            pirate, null);
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+            Signature signature = loadAppInfo.getSignatures()[0];
+            String signaturesMD5 = getSignaturesMD5(signature);
+            if (!signaturesMD5.equals("135313873751656236811883201194340890628")) {
+                Drawable pirate = AppCompatResources.getDrawable(getContext(),
+                        R.drawable.pirate);
+                pirate.setBounds(0, 0,
+                        pirate.getIntrinsicWidth() / 3,
+                        pirate.getIntrinsicHeight() / 3);
+                tv_title.setCompoundDrawables(null, null,
+                        pirate, null);
             }
         }
         if (ExtractApp.isBackupAPP(packageName)) {
             mbtn_extract.setText("提取中..");
             mbtn_extract.setTextSize(12);
         }
-        ExtractApp extractApp = new ExtractApp(getContext(), packageInfo, appLabel);
+        ExtractApp extractApp = new ExtractApp(getContext(), loadAppInfo.getPackageInfo(), appLabel);
         mbtn_extract.setOnClickListener(extractApp);
         mbtn_shareApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,7 +296,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                 mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
                 mIntent.setData(Uri.fromParts("package", packageName, null));
                 try {
-                    if (!isPkgBlackFilter(getContext(), applicationInfo)) {
+                    if (!isPkgBlackFilter(getContext(), loadAppInfo.getPackageInfo().applicationInfo)) {
                         getContext().startActivity(mIntent);
                     }
                 } catch (Exception e) {
@@ -367,7 +326,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    String fileMD5 = MD5Utils.getFileMD5(applicationInfo.sourceDir);
+                    String fileMD5 = MD5Utils.getFileMD5(loadAppInfo.getSourceDir());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -382,8 +341,8 @@ public class AppOperaViewDialog extends BottomSheetDialog {
         }
         if (preferences.getBoolean("key_show_installData", false)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            tv_firstInstall.setText("初次安装：" + dateFormat.format(new Date(loadAppInfos.getFirstInstallTime())));
-            tv_lastUpdate.setText("最近更新：" + dateFormat.format(new Date(loadAppInfos.getLastUpdataTime())));
+            tv_firstInstall.setText("初次安装：" + dateFormat.format(new Date(loadAppInfo.getFirstInstallTime())));
+            tv_lastUpdate.setText("最近更新：" + dateFormat.format(new Date(loadAppInfo.getLastUpdataTime())));
         } else {
             tv_firstInstall.setVisibility(View.GONE);
             tv_lastUpdate.setVisibility(View.GONE);
@@ -398,7 +357,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
     }
 
     private boolean isExistApkFile() {
-        File file = new File(sourceDir);
+        File file = new File(loadAppInfo.getSourceDir());
         return file.exists();
     }
 

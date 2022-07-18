@@ -5,7 +5,6 @@ import static com.alphi.apkexport.utils.AlphiFileUtil.getSize;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.utils.LoadAppInfos;
 import com.alphi.apkexport.dialog.AppOperaViewDialog;
+import com.alphi.apkexport.utils.LoadAppInfos;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * IDEA 2022/02/06
@@ -34,11 +32,7 @@ public class MyListViewAdapter extends BaseAdapter {
     private List<PackageInfo> data; //要显示的数组
     private final Context content;
     private LoadAppInfos loadAppInfos; //解析PackageInfo的方法
-    private Map<String, Long> appSizeMap; //app总大小Map
-    private Map<String, Bitmap> appIcons; //app图标Map
-    private Map<String, String> appLabels;
     public boolean isShowFirstInstallTime;
-    private Map<String, Long> apkSizeMap;
 
 
     public MyListViewAdapter(Context context) {
@@ -54,30 +48,6 @@ public class MyListViewAdapter extends BaseAdapter {
         this.data = data;
         notifyDataSetChanged();
     }
-
-    public void updateAppLabel(Map<String, String> appLabel) {
-        this.appLabels = appLabel;
-    }
-
-    public void updateAppIcons(Map<String, Bitmap> appIcons) {
-        this.appIcons = appIcons;
-        notifyDataSetChanged();
-    }
-
-    public void update_apkSizeMap(Map<String, Long> apkSizeMap) {
-        this.apkSizeMap = apkSizeMap;
-    }
-
-    /**
-     * 获取app占用空间，因为比较慢，用多线程处理
-     *
-     * @param appSizeMap app总大小
-     */
-    public void updata_appSizeMap(Map<String, Long> appSizeMap) {
-        this.appSizeMap = appSizeMap;
-        notifyDataSetChanged();
-    }
-
 
     @Override
     public int getCount() {
@@ -128,17 +98,8 @@ public class MyListViewAdapter extends BaseAdapter {
         loadAppInfos.load(packageInfo);
 
         String packageName = packageInfo.packageName;
-        if (appIcons != null && appIcons.containsKey(packageName)) {
-            holder.imageView.setImageBitmap(appIcons.get(packageName));
-        } else {
-            holder.imageView.setImageBitmap(loadAppInfos.getBitmapIcon());
-        }
-
-        if (appLabels != null) {
-            holder.tv_label.setText(appLabels.get(packageName));
-        } else {
-            holder.tv_label.setText(loadAppInfos.getAppName());
-        }
+        holder.imageView.setImageBitmap(loadAppInfos.getBitmapIcon());
+        holder.tv_label.setText(loadAppInfos.getAppName());
 
         boolean isXApk = loadAppInfos.isXApk();
         if (isXApk) {
@@ -149,13 +110,7 @@ public class MyListViewAdapter extends BaseAdapter {
 
         holder.tv_pkg.setText(loadAppInfos.getPackageName());
 
-        Long apkSize = null;
-        if (apkSizeMap != null) {
-            apkSize = apkSizeMap.get(packageName);
-        }
-        if (apkSize == null) {
-            apkSize = loadAppInfos.getApkSize();
-        }
+        long apkSize = loadAppInfos.getApkSize();
         String apkSizeStr = getSize(apkSize);
 
         String libType = loadAppInfos.getLibType();
@@ -189,14 +144,7 @@ public class MyListViewAdapter extends BaseAdapter {
             }
 
             holder.tv_apkSize.setText(apkSizeStr);
-            if (appSizeMap != null) {
-                Long longSize = appSizeMap.get(packageName);
-                if (longSize != null && longSize > 0) {
-                    holder.tv_appSize.setText(getSize(longSize));
-                } else {
-                    holder.tv_appSize.setText(null);
-                }
-            }
+            holder.tv_appSize.setText(getSize(loadAppInfos.getTotalSize()));
             String dataTimeStr;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             if (!isShowFirstInstallTime) {
@@ -214,7 +162,7 @@ public class MyListViewAdapter extends BaseAdapter {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppOperaViewDialog showDialog = new AppOperaViewDialog(content, data.get(position), appLabels, appIcons, apkSizeMap, appSizeMap);
+                AppOperaViewDialog showDialog = new AppOperaViewDialog(content, data.get(position));
                 showDialog.show();
             }
         });

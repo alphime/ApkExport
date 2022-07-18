@@ -21,9 +21,9 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
-import com.alphi.apkexport.utils.ExtractFile;
 import com.alphi.apkexport.dialog.AuthorDialog;
 import com.alphi.apkexport.dialog.SplitInstallIntroduceDialog;
+import com.alphi.apkexport.utils.ExtractFile;
 
 import java.io.File;
 
