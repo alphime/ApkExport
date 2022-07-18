@@ -450,8 +450,11 @@ public class MainActivity extends AppCompatActivity {
                                 return;
                             }
                             rs.add(packageInfo);
-                            if (i % 8 == 0 || i == size - 1)
-                                runOnUiThread(() -> listAdapter.update(rs));
+                            // 经常刷新性能也会不太好
+                            if (i % 8 == 0) {
+                                // 不定时刷新引用相同数组，会引发闪退不刷新会闪退！所以直接new个新的得了。。。
+                                runOnUiThread(() -> listAdapter.update(new ArrayList<>(rs)));
+                            }
                         }
                     }
                     if (searchPerformance[1] && str.charAt(0) == '@' && str.length() > 2) {
@@ -494,8 +497,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     int size = rs.size();
                     listView.setVisibility(View.VISIBLE);
-                    if (!s.equals(key_kotlin))
-                        listAdapter.update(rs);
+                    listAdapter.update(rs);
                     mtv_search_rs_count.setVisibility(View.VISIBLE);
                     if (finalSearchLibType) {
                         mtv_search_rs_count.setText(finalStr_a + "：" + size + " / " + finalAbi);
@@ -521,6 +523,7 @@ public class MainActivity extends AppCompatActivity {
                     mtv_search_rs_count.setVisibility(View.INVISIBLE);
                     mBtn_syncApps.setVisibility(View.VISIBLE);
                 });
+            System.gc();
         };
         new Thread(runnable).start();
     }
