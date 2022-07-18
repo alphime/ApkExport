@@ -367,17 +367,6 @@ public class MainActivity extends AppCompatActivity {
         listAdapter.setLiteMode(preferences.getBoolean("key_lite_mode", false));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (MultiChoiceModeListener.uninstallFailed > 0) {
-            Toast.makeText(this, MultiChoiceModeListener.uninstallFailed + "项为无法卸载的系统应用", Toast.LENGTH_SHORT).show();
-            MultiChoiceModeListener.uninstallFailed = 0;
-        } else if (MultiChoiceModeListener.uninstallFailed == -1) {
-            Toast.makeText(this, "卸载出现异常，可能是可卸载的系统应用的限制！\n请进入‘已更新的系统应用’进入详情进行排查", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void getPerformance() {
         if (preferences == null) {
             preferences = getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", MODE_PRIVATE);

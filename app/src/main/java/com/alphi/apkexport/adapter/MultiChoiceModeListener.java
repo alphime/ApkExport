@@ -6,9 +6,10 @@ package com.alphi.apkexport.adapter;
 import static com.alphi.apkexport.utils.BlackFilter.isPkgBlackFilter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alphi.apkexport.R;
@@ -31,7 +33,6 @@ public class MultiChoiceModeListener implements AbsListView.MultiChoiceModeListe
     private final MyListViewAdapter mAdapter;
     private final Context context;
     protected static final Set<PackageInfo> mSelectedItems = new HashSet<>();
-    public static int uninstallFailed;
 
     public MultiChoiceModeListener(MyListViewAdapter mAdapter, Context context) {
         this.mAdapter = mAdapter;
@@ -128,39 +129,52 @@ public class MultiChoiceModeListener implements AbsListView.MultiChoiceModeListe
                 break;
             case R.id.menu_uninstall:
                 new Thread(new Runnable() {
+
+                    private int errCount;
+
                     @Override
                     public void run() {
                         List<Intent> intents = new ArrayList<>();
                         for (PackageInfo packageInfo : mSelectedItems) {
-                            ApplicationInfo applicationInfo = packageInfo.applicationInfo;
-                            if (!isPkgBlackFilter(context, applicationInfo)) {
-                                Intent intent = new Intent(Intent.ACTION_DELETE);
-                                Uri uri = Uri.parse("package:" + packageInfo.packageName);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                                intents.add(intent);
-                            } else {
-                                uninstallFailed++;
+                            if (isPkgBlackFilter(packageInfo.applicationInfo)) {
+                                errCount++;
+                                continue;
                             }
+                            Intent intent = new Intent(Intent.ACTION_DELETE);
+                            Uri uri = Uri.parse("package:" + packageInfo.packageName);
+                            intent.setData(uri);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                            intents.add(intent);
                         }
                         if (intents.size() > 0) {
                             try {
                                 context.startActivities(intents.toArray(new Intent[0]));
                             } catch (Exception e) {
-                                uninstallFailed = -1;
                                 e.printStackTrace();
+                                TextView tv = new TextView(context);
+                                tv.setTextSize(17);
+                                tv.setPadding(70, 30, 70, 20);
+                                tv.setText("为了更好的使用，请到切换应用类型里面点击两次“系统应用”进入到“已更新的系统应用”，然后逐个点击应用再点详情按钮以进行排查，找到出错的应用进行截图并将截图反馈给作者吧！谢谢 ~");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                                        .setTitle("出错啦！")
+                                        .setView(tv)
+                                        .setCancelable(false)
+                                        .setPositiveButton("好的，我了解了", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                handler.post(builder::show);
                             }
                         }
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (uninstallFailed > 0) {
-                                    Toast.makeText(context, uninstallFailed + "项为无法卸载的系统应用", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "卸载出现异常，可能是可卸载的系统应用的限制！\n请进入‘已更新的系统应用’进入详情进行排查", Toast.LENGTH_SHORT).show();
+                                if (errCount > 0) {
+                                    Toast.makeText(context, errCount + "项为无法卸载的系统应用", Toast.LENGTH_SHORT).show();
                                 }
-                                uninstallFailed = 0;
                             }
                         });
                     }

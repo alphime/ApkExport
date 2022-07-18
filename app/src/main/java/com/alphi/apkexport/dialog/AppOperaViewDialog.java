@@ -5,14 +5,14 @@ package com.alphi.apkexport.dialog;
 
 import static com.alphi.apkexport.utils.AlphiFileUtil.getSize;
 import static com.alphi.apkexport.utils.BlackFilter.isPkgBlackFilter;
-import static com.alphi.apkexport.utils.BlackFilter.readPkgBlackFilter;
-import static com.alphi.apkexport.utils.BlackFilter.writePkgBlackFilter;
 import static com.alphi.apkexport.utils.MD5Utils.getSignaturesMD5;
 import static com.alphi.apkexport.utils.ShareUtil.shareApkFile;
 import static com.alphi.apkexport.utils.ZipUtil.readZip_IsExistFile;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,16 +43,12 @@ import com.alphi.apkexport.widget.ExtractApp;
 import com.alphi.apkexport.widget.OnClickEvent;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
-import java.util.Set;
 
 public class AppOperaViewDialog extends BottomSheetDialog {
     private final LoadAppInfos loadAppInfo;
@@ -296,29 +291,25 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                 mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
                 mIntent.setData(Uri.fromParts("package", packageName, null));
                 try {
-                    if (!isPkgBlackFilter(getContext(), loadAppInfo.getPackageInfo().applicationInfo)) {
+                    if (!isPkgBlackFilter(loadAppInfo.getPackageInfo().applicationInfo)) {
                         getContext().startActivity(mIntent);
                     }
-                } catch (Exception e) {
-                    @SuppressLint("SdCardPath")
-                    String path = "/sdcard/" + ExtractFile.savePath + "/errFilter.txt";
-                    File file = new File(path);
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                        writePkgBlackFilter(getContext(), packageName);
-                        if (file.isDirectory()) file.delete();
-                        File fileDir = file.getParentFile();
-                        if (fileDir.isFile()) fileDir.delete();
-                        if (!fileDir.exists()) fileDir.mkdirs();
-                        if (!file.exists()) {
-                            file.createNewFile();
-                        }
-                        Set<String> filter = readPkgBlackFilter(getContext());
-                        writer.write("pkg: " + Arrays.toString(filter.toArray()));
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    Toast.makeText(getContext(), "出错啦！请将" + path + "文件发送给开发者邮箱！", Toast.LENGTH_SHORT).show();
-                    Log.e("SecurityException: pkg", packageName, e);
+                } catch (Exception ignored) {
+                    TextView tv = new TextView(getContext());
+                    tv.setTextSize(17);
+                    tv.setPadding(70, 30, 70, 20);
+                    tv.setText("为了更好的使用，请将截图反馈给作者吧！\n手机型号：" + Build.BRAND + " " + Build.MODEL + "\n包名: " + packageName + "\n应用名称: " + loadAppInfo.getAppName()
+                        + "\n这个出错原因呢，是因为系统做了些限制，权限不足啊 ~");
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("出错啦！")
+                            .setView(tv)
+                            .setCancelable(false)
+                            .setPositiveButton("好的，我已截图了", new OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
                 }
             }
         });

@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -46,7 +47,7 @@ public class ExtractApp implements View.OnClickListener {
     @SuppressLint("StaticFieldLeak")
     private static ProgressBar progressBar;
     private final String oobPath;
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public ExtractApp(Context context, final PackageInfo packageInfo, final String appLabel) {
         ApplicationInfo applicationInfo = packageInfo.applicationInfo;
