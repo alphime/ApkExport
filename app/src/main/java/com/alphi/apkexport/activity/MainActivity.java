@@ -431,8 +431,7 @@ public class MainActivity extends AppCompatActivity {
                 long search_time = System.currentTimeMillis();
                 this.search_time = search_time;
                 runOnUiThread(() -> mtv_search_rs_count.setText("正在搜索..."));
-                for (int i = 0, size = packageInfos.size(); i < size; i++) {
-                    PackageInfo packageInfo = packageInfos.get(i);
+                for (PackageInfo packageInfo : packageInfos) {
                     loadAppInfos.load(packageInfo);
                     String pkgName = loadAppInfos.getPackageName().toString();
                     if (appLabel.containsKey(packageInfo.packageName) && appLabel.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
@@ -451,7 +450,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             rs.add(packageInfo);
                             // 经常刷新性能也会不太好
-                            if (i % 8 == 0) {
+                            if (rs.size() % 12 == 0) {
                                 // 不定时刷新引用相同数组，会引发闪退不刷新会闪退！所以直接new个新的得了。。。
                                 runOnUiThread(() -> listAdapter.update(new ArrayList<>(rs)));
                             }
