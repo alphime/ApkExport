@@ -354,6 +354,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
     protected void onStop() {
         super.onStop();
         remind_thread.interrupt();
+        System.gc();
     }
 
     private boolean isExistApkFile() {
