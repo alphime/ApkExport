@@ -50,7 +50,7 @@ public class MyListViewAdapter extends BaseAdapter {
      *
      * @param data 信息
      */
-    public void update(List<PackageInfo> data) {
+    public synchronized void update(List<PackageInfo> data) {
         this.data = data;
         notifyDataSetChanged();
     }

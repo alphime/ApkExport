@@ -415,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
      * 搜索
      */
     private synchronized void searchMethod(CharSequence s) {
+        final String key_aab = "..aab", key_kotlin = "..kotlin", key_abi = "abi", key_noAbi = "noabi";
         @SuppressLint("SetTextI18n") Runnable runnable = () -> {
             List<PackageInfo> packageInfos = getPackageInfos();
             if (packageInfos == null) {
@@ -430,7 +431,8 @@ public class MainActivity extends AppCompatActivity {
                 long search_time = System.currentTimeMillis();
                 this.search_time = search_time;
                 runOnUiThread(() -> mtv_search_rs_count.setText("正在搜索..."));
-                for (PackageInfo packageInfo : packageInfos) {
+                for (int i = 0, size = packageInfos.size(); i < size; i++) {
+                    PackageInfo packageInfo = packageInfos.get(i);
                     loadAppInfos.load(packageInfo);
                     String pkgName = loadAppInfos.getPackageName().toString();
                     if (appLabel.containsKey(packageInfo.packageName) && appLabel.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
@@ -439,20 +441,23 @@ public class MainActivity extends AppCompatActivity {
                         rs.add(packageInfo);
                     }
                     if (searchPerformance[2]) {
-                        if (str.equals("..aab") && loadAppInfos.isAAB()) {
+                        if (str.equals(key_aab) && loadAppInfos.isAAB()) {
                             if (rs == null || this.search_time != search_time)
                                 return;
                             rs.add(packageInfo);
-                        } else if (str.equals("..kotlin") && loadAppInfos.hasKotlinLang()) {
+                        } else if (str.equals(key_kotlin) && loadAppInfos.hasKotlinLang()) {
                             if (rs == null || this.search_time != search_time) {
                                 return;
                             }
                             rs.add(packageInfo);
+                            if (i % 8 == 0 || i == size - 1)
+                                runOnUiThread(() -> listAdapter.update(rs));
                         }
                     }
                     if (searchPerformance[1] && str.charAt(0) == '@' && str.length() > 2) {
                         if (rs == null || this.search_time != search_time)
                             return;
+                        // 为了不重复截取！
                         if (str_a == null) {
                             str_a = str.substring(1);
                         }
@@ -464,12 +469,14 @@ public class MainActivity extends AppCompatActivity {
                         } else if (str_a.equals(String.valueOf(loadAppInfos.getAppLevel()))) {
                             sdk = Integer.parseInt(str_a);
                             rs.add(packageInfo);
-                        } else if (str_a.equals("abi") && libType != null) {
+                        } else if (str_a.equals(key_abi) && libType != null) {
                             rs.add(packageInfo);
                             searchAboutAbi = true;
-                        } else if (str_a.equals("noabi") && libType == null) {
-                            rs.add(packageInfo);
-                            searchAboutAbi = true;
+                        } else {
+                            if (str_a.equals(key_noAbi) && libType == null) {
+                                rs.add(packageInfo);
+                                searchAboutAbi = true;
+                            }
                         }
                     }
                 }
@@ -487,7 +494,8 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     int size = rs.size();
                     listView.setVisibility(View.VISIBLE);
-                    listAdapter.update(rs);
+                    if (!s.equals(key_kotlin))
+                        listAdapter.update(rs);
                     mtv_search_rs_count.setVisibility(View.VISIBLE);
                     if (finalSearchLibType) {
                         mtv_search_rs_count.setText(finalStr_a + "：" + size + " / " + finalAbi);
@@ -495,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
                         mtv_search_rs_count.setText("SDK" + finalSdk + "的应用有" + size + "个");
                     } else if (finalSearchAboutAbi) {
                         String strType;
-                        if (finalStr_a.equals("abi")) {
+                        if (finalStr_a.equals(key_abi)) {
                             strType = "原生库的";
                         } else {
                             strType = "无原生库";
