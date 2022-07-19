@@ -5,6 +5,7 @@ import static com.alphi.apkexport.utils.MD5Utils.getSignaturesMD5;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -140,9 +141,22 @@ public class SignatureActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+                tv_name.setPadding(30, 26, 30, 10);
+                Intent intent = getPackageManager().getLaunchIntentForPackage(loadAppInfos.getPackageName().toString());
+                TextView tv_active;
+                if (intent != null) {
+                    tv_active = createTextView("MainActivity: "+intent.getComponent().getClassName(), null);
+                    tv_active.setPadding(30, 10, 30, 10);
+                } else {
+                    tv_active = null;
+                }
                 TextView tv_sn = createTextView(sn, null);
-                ((AppCompatActivity)context).runOnUiThread(() -> {
+                tv_sn.setPadding(30, 10, 30, 32);
+                ((AppCompatActivity) context).runOnUiThread(() -> {
                     grid.addView(tv_name);
+                    if (tv_active != null) {
+                        grid.addView(tv_active);
+                    }
                     grid.addView(tv_sn);
                     progressBar.setVisibility(View.GONE);
                 });
@@ -155,10 +169,8 @@ public class SignatureActivity extends AppCompatActivity {
             if (listener != null) {
                 tv.setOnLongClickListener(listener);
                 tv.setTextSize(20);
-                tv.setPadding(30,22,30,10);
             } else {
                 tv.setTextIsSelectable(true);
-                tv.setPadding(30,10,30,26);
             }
             return tv;
         }
