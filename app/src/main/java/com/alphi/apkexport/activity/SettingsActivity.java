@@ -143,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             System.out.println("kk: " + pressCount);
-                            if (pressCount > 7)
+                            if (pressCount > 5)
                                 replaceFragment(new MoreFunFragment())
                                     .addToBackStack(null)
                                     .commit();
@@ -151,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
                             handler.removeCallbacksAndMessages(this);
                             pressCount = 0;
                         }
-                    }, this, SystemClock.uptimeMillis() + 1200);
+                    }, this, SystemClock.uptimeMillis() + 1000);
                     return true;
                 }
             });
