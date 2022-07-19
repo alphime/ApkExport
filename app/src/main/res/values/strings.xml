@@ -66,6 +66,12 @@
     <string name="aab_introduce">Android App Bundle 是 Google 公司新推出的一种官方发布格式，用于减少应用的包大小，是由一个完整的apk安装包拆分为多个apk文件组成的，又称Split APKs</string>
     <string name="include_kotlin_lang">include Kotlin Lang</string>
     <string name="donate">-- 致用户：\n感谢您陪伴了Apk Export应用%d天；Apk Export离不开大家的支持！ApkExport不会加入任何广告的，因为大家也不喜欢广告，且广告影响大家的使用；同时作者也会利用业余时间来更新优化app的，如果你觉得这个应用不错，那么欢迎支持下作者！捐赠是对软件的良性循环做出贡献，可以帮助作者使ApkExport做得更好！</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fun_md5_show">应用MD5签名显示</string>
+    <string name="entry">进入</string>
+    <string name="fun_apk_import">Apk Import</string>
+    <string name="fun_apk_import_introduce">一款可以安装Split Apk格式的工具</string>
+    <string name="please_wait">尽情期待</string>
 
     <!-- Preference Titles -->
 

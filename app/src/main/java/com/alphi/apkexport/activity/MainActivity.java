@@ -13,18 +13,14 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.inputmethod.EditorInfo;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -45,6 +41,7 @@ import com.alphi.apkexport.R;
 import com.alphi.apkexport.adapter.ListScrollListener;
 import com.alphi.apkexport.adapter.MultiChoiceModeListener;
 import com.alphi.apkexport.adapter.MyListViewAdapter;
+import com.alphi.apkexport.adapter.SearchAdapt;
 import com.alphi.apkexport.utils.LoadAppInfos;
 import com.alphi.apkexport.utils.MD5Utils;
 import com.alphi.apkexport.utils.MyAppComparator;
@@ -80,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
     private List<PackageInfo> allPackageInfos;
     private LoadAppInfos loadAppInfos;
     private TextView mtv_search_rs_count;
-    private EditText mEdit_bar;
     private ListScrollListener listScrollListener;
     private SharedPreferences preferences;
     private String intentClassSimpleName;
@@ -98,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private final boolean[] searchPerformance = new boolean[3];
     public static ActivityResultLauncher<Intent> intentActivityResultLauncher;
-    private FrameLayout mSearch_bar;
     /**
      * 搜索结果的集合
      **/
@@ -106,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mBtn_syncApps;
     private long search_time;
     private Class<?> settingsClass;
+    private SearchAdapt searchAdapt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         getPerformance();
         prepareStart();
-        new Thread(new mRunnable()).start();
+        new Thread(new MRunnable()).start();
         // 开启app的权限提示
         if (!preferences.getBoolean("disableReminder", false) &&
                 !new PermissionActivity.CheckPermission(this).isGetAllPermission()) {
@@ -145,17 +141,18 @@ public class MainActivity extends AppCompatActivity {
             location_menu_search[1] = getSupportActionBar().getHeight() / 2;
         }
         if (item.getItemId() == R.id.menu_search) {
-            searchBar_Visible();
+            searchAdapt.show();
             listView.setOnScrollListener(listScrollListener);
-            if (listScrollListener.scrollState == 0) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mEdit_bar.requestFocus();
-                        showSoftInput(mEdit_bar);
-                    }
-                }, 100);
-            }
+            // 记号 old
+//            if (listScrollListener.scrollState == 0) {
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mEdit_bar.requestFocus();
+//                        showSoftInput(mEdit_bar);
+//                    }
+//                }, 100);
+//            }
         } else if (item.getItemId() == R.id.menu_settings) {
             Intent intent = new Intent();
             intent.setClass(this, settingsClass);
@@ -212,11 +209,7 @@ public class MainActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progressFrame);
         ExtractApp.initProgressBar(findViewById(R.id.progressbar_extract));
         mBtn_syncApps = findViewById(R.id.syncApps);
-        mSearch_bar = findViewById(R.id.search_bar);
         listScrollListener = new ListScrollListener((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
-        mEdit_bar = findViewById(R.id.et_search);
-        TextView mtv_closeSearch = findViewById(R.id.close_search);
-        ImageView mClear_text = findViewById(R.id.clear_text);
         mtv_search_rs_count = findViewById(R.id.search_rs_count);
         RelativeLayout status_bar = findViewById(R.id.status_bar);
         mBtn_syncApps.setOnClickListener(new View.OnClickListener() {
@@ -225,48 +218,29 @@ public class MainActivity extends AppCompatActivity {
                 isSyncApps = true;
                 mProgressBar.setVisibility(View.VISIBLE);
                 mtv_search_rs_count.setVisibility(View.INVISIBLE);
-                new Thread(new mRunnable()).start();
+                new Thread(new MRunnable()).start();
             }
         });
-        mtv_closeSearch.setOnClickListener(new View.OnClickListener() {
+        searchAdapt = SearchAdapt.init(findViewById(R.id.search_bar), new SearchAdapt.SearchAdaptListener() {
             @Override
-            public void onClick(View v) {
-                searchBar_Gone();
-                hiddenSoftInput(v);
-            }
-        });
-        mEdit_bar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    hiddenSoftInput(v);
-                    searchMethod(v.getText().toString());
-                    return true;
-                }
-                return false;
-            }
-        });
-        mEdit_bar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void searchMethod(CharSequence key) {
+                MainActivity.this.searchMethod(key);
             }
 
             @Override
-            public void onTextChanged(final CharSequence s, int start, int before, int count) {
-
+            public int[] showAnimation(ViewGroup v) {
+                Animator circularReveal = ViewAnimationUtils.createCircularReveal(v, location_menu_search[0], location_menu_search[1], 0, location_menu_search[0]);
+                circularReveal.setDuration(200);
+                circularReveal.start();
+                return new int[]{100, 1};
             }
 
             @Override
-            public void afterTextChanged(final Editable s) {
-                Log.d("TAG", "afterTextChanged: " + s);
-                searchMethod(s);
-            }
-        });
-        mClear_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEdit_bar.getText().clear();
+            public int[] hideAnimation(ViewGroup v) {
+                Animator circularReveal = ViewAnimationUtils.createCircularReveal(v, location_menu_search[0], location_menu_search[1], location_menu_search[0], 0);
+                circularReveal.setDuration(300);
+                circularReveal.start();
+                return new int[]{300, 1};
             }
         });
         mAppsInfo.setOnClickListener(new View.OnClickListener() {
@@ -294,16 +268,12 @@ public class MainActivity extends AppCompatActivity {
                                 case R.id.AllApps:
                                     flag = 0;
                             }
-                            String search_key_cache;
-                            if (mEdit_bar != null)
-                                search_key_cache = mEdit_bar.getText().toString();
-                            else
-                                search_key_cache = null;
+                            String search_key_cache = searchAdapt.getKeyWord();
                             if (search_key_cache == null || search_key_cache.isEmpty() || rs == null) {
                                 mProgressBar.setVisibility(View.VISIBLE);
                                 mtv_search_rs_count.setText(null);
                                 mtv_search_rs_count.setVisibility(View.INVISIBLE);
-                                new Thread(new mRunnable()).start();
+                                new Thread(new MRunnable()).start();
                             } else {
                                 mAppsInfo.setText(getAppsTypeAndNum());
                                 searchMethod(search_key_cache);
@@ -315,26 +285,6 @@ public class MainActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
-    }
-
-    private void searchBar_Visible() {
-        mSearch_bar.setVisibility(View.VISIBLE);
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(mSearch_bar, location_menu_search[0], location_menu_search[1], 0, location_menu_search[0]);
-        circularReveal.setDuration(200);
-        circularReveal.start();
-    }
-
-    private void searchBar_Gone() {
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(mSearch_bar, location_menu_search[0], location_menu_search[1], location_menu_search[0], 0);
-        circularReveal.setDuration(300);
-        circularReveal.start();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSearch_bar.setVisibility(View.GONE);
-                hiddenSoftInput(mSearch_bar);
-            }
-        }, 300);
     }
 
     @Override
@@ -497,22 +447,6 @@ public class MainActivity extends AppCompatActivity {
         new Thread(runnable).start();
     }
 
-    private void showSoftInput(View v) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        boolean b = imm.showSoftInput(v, 0);
-        if (!b) {
-            imm.toggleSoftInputFromWindow(v.getWindowToken(), 0, 0);
-        }
-    }
-
-    /**
-     * 隐藏软键盘
-     */
-    private void hiddenSoftInput(View v) {
-        InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        manager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
 
     @NonNull
     private String getAppsTypeAndNum() {
@@ -533,7 +467,7 @@ public class MainActivity extends AppCompatActivity {
         return appsType;
     }
 
-    class mRunnable implements Runnable {
+    class MRunnable implements Runnable {
 
         @SuppressLint("SetTextI18n")
         @Override
@@ -748,8 +682,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mSearch_bar.getVisibility() == View.VISIBLE) {
-            searchBar_Gone();
+        if (searchAdapt.isShowing()) {
+            searchAdapt.hidden();
             return;
         }
         if (ExtractApp.isRunningBackUp()) {

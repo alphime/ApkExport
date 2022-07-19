@@ -5,6 +5,8 @@ import static com.alphi.apkexport.utils.ShareUtil.shareApkFile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
+import com.alphi.apkexport.activity.fragment.MoreFunFragment;
 import com.alphi.apkexport.dialog.AuthorDialog;
 import com.alphi.apkexport.dialog.SplitInstallIntroduceDialog;
 import com.alphi.apkexport.utils.ExtractFile;
@@ -53,8 +56,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     protected static FragmentTransaction replaceFragment(@NonNull Fragment fragment, @AnimatorRes @AnimRes int enter,
-                                                      @AnimatorRes @AnimRes int exit, @AnimatorRes @AnimRes int popEnter,
-                                                      @AnimatorRes @AnimRes int popExit) {
+                                                         @AnimatorRes @AnimRes int exit, @AnimatorRes @AnimRes int popEnter,
+                                                         @AnimatorRes @AnimRes int popExit) {
         return supportFragmentManager.beginTransaction()
                 .setCustomAnimations(enter, exit, popEnter, popExit)
                 .replace(R.id.settings, fragment);
@@ -124,6 +127,31 @@ public class SettingsActivity extends AppCompatActivity {
                     ExtractFile extractFile = new ExtractFile(getContext().getPackageCodePath(), getString(R.string.app_name) + " _" + BuildConfig.VERSION_NAME + ".apk");
                     extractFile.toSave();
                     shareApkFile(getContext(), extractFile.getOutFileDir());
+                    return true;
+                }
+            });
+
+            key_version.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                private int pressCount = 0;
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    pressCount++;
+                    // 延迟执行
+                    Handler handler = new Handler();
+                    handler.postAtTime(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("kk: " + pressCount);
+                            if (pressCount > 7)
+                                replaceFragment(new MoreFunFragment())
+                                    .addToBackStack(null)
+                                    .commit();
+                            // 移除队列
+                            handler.removeCallbacksAndMessages(this);
+                            pressCount = 0;
+                        }
+                    }, this, SystemClock.uptimeMillis() + 1200);
                     return true;
                 }
             });
