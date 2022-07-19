@@ -85,8 +85,8 @@ public class SignatureActivity extends AppCompatActivity {
         item.setIcon(R.drawable.ic_search);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         supportActionBar = getSupportActionBar();
-        supportActionBar.setTitle(R.string.fun_md5_show);
         if (supportActionBar != null) {
+            supportActionBar.setTitle(R.string.fun_md5_show);
             supportActionBar.setShowHideAnimationEnabled(false);
         }
         return super.onCreateOptionsMenu(menu);
