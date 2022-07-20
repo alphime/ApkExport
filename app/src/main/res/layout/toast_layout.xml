@@ -1,10 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/toast_bg"
     android:orientation="vertical">
 
     <TextView
+
+        android:background="@drawable/toast_bg"
 
         android:id="@+id/toast_message"
 
@@ -18,5 +19,13 @@
 
         android:paddingHorizontal="16dp"
 
-        android:paddingVertical="10dp" />
-</LinearLayout>
+        android:paddingVertical="10dp"
+
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/logo" />
+
+</FrameLayout>
