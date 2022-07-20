@@ -8,10 +8,10 @@
     <string name="search_reminder">请输入关键字</string>
     <string name="sysapp">系统应用</string>
     <string name="search_result_count">查询到%d个APP</string>
-    <string name="reqStorage">申请”存储权限”以便于您可以通过本App备份应用</string>
-    <string name="reqAppUsage">申请用户使用情况，可获取APP总占用空间</string>
-    <string name="req_queryAllApp">申请获取全部应用</string>
-    <string name="entryapp">进入APP</string>
+    <string name="reqStorage">申请”存储权限”，为用户在使用备份APP的时候能将安装包保存在内部存储共享空间</string>
+    <string name="reqAppUsage">申请用户使用情况，为了用户在APP时能够方便查看APP占用设备空间的大小</string>
+    <string name="req_queryAllApp">申请获取全部应用安装包信息，为了用户在APP时能正常展示所有应用的安装包信息。</string>
+    <string name="entry_app">进入APP</string>
     <string name="welcome">欢迎使用</string>
     <string name="reminder">您在使用本App使用过程中可能需要以下权限：</string>
     <string name="save_reminder">温馨小提示：</string>

@@ -10,7 +10,8 @@
         android:layout_height="85dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        android:contentDescription="@string/app_name"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,19 +31,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="12dp">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/req_queryAllApp" />
 
         <TextView
             android:id="@+id/req_queryAllApp_rs"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"/>
     </LinearLayout>
 
     <LinearLayout
@@ -95,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
-        android:text="@string/entryapp"
+        android:text="@string/entry_app"
         android:textSize="18sp"
         style="@style/Widget.MaterialComponents.Button.TextButton" />
 </LinearLayout>
