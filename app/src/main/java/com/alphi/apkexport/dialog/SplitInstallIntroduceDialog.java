@@ -18,7 +18,7 @@ import android.provider.Settings;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.NonNull;
 

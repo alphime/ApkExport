@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.alphi.apkexport.widget.Toast;
 
 import com.alphi.apkexport.R;
 import com.alphi.apkexport.utils.ShareUtil;

@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Parcelable;
-import android.widget.Toast;
+import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;

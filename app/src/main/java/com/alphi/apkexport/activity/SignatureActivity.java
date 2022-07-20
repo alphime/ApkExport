@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -142,21 +142,10 @@ public class SignatureActivity extends AppCompatActivity {
                     }
                 });
                 tv_name.setPadding(30, 26, 30, 10);
-                Intent intent = getPackageManager().getLaunchIntentForPackage(loadAppInfos.getPackageName().toString());
-                TextView tv_active;
-                if (intent != null) {
-                    tv_active = createTextView("MainActivity: "+intent.getComponent().getClassName(), null);
-                    tv_active.setPadding(30, 10, 30, 10);
-                } else {
-                    tv_active = null;
-                }
                 TextView tv_sn = createTextView(sn, null);
                 tv_sn.setPadding(30, 10, 30, 32);
                 ((AppCompatActivity) context).runOnUiThread(() -> {
                     grid.addView(tv_name);
-                    if (tv_active != null) {
-                        grid.addView(tv_active);
-                    }
                     grid.addView(tv_sn);
                     progressBar.setVisibility(View.GONE);
                 });

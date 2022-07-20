@@ -30,7 +30,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.alphi.apkexport.widget.Toast;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -137,7 +137,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             String sdk_androidVer = properties.getProperty(String.valueOf(sdkVersion));
             if (sdk_androidVer != null)
                 tv_sdk.setOnLongClickListener(v -> {
-                    Toast.makeText(getContext(), "SDK " + sdkVersion + " 基于 " + sdk_androidVer, Toast.LENGTH_LONG).
+                    Toast.makeText(getContext(), "SDK " + sdkVersion + " 基于 " + sdk_androidVer, android.widget.Toast.LENGTH_LONG).
                             show();
                     return true;
                 });
@@ -186,6 +186,8 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             flag_xapk.setVisibility(View.VISIBLE);
         }
         mAppIcon.setOnClickListener(new OnClickEvent(new OnClickEvent.OnClickListener() {
+            private boolean isStart;
+
             @Override
             public void onSingleClick() {
             }
@@ -194,7 +196,16 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             public void onDoubleClick() {
                 Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(packageName);
                 if (intent != null) {
-                    getContext().startActivity(intent);
+                    if (isStart) {
+                        isStart = false;
+                        getContext().startActivity(intent);
+                    } else {
+                        isStart = true;
+                        Toast.makeText(getContext(), "Main: " + intent.getComponent().getClassName(), Toast.LENGTH_SHORT).show();
+                        handler.postDelayed(() -> {
+                            isStart = false;
+                        }, 450);
+                    }
                 }
             }
         }));
@@ -299,7 +310,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                     tv.setTextSize(17);
                     tv.setPadding(70, 30, 70, 20);
                     tv.setText("为了更好的使用，请将截图反馈给作者吧！\n手机型号：" + Build.BRAND + " " + Build.MODEL + "\n包名: " + packageName + "\n应用名称: " + loadAppInfo.getAppName()
-                        + "\n这个出错原因呢，是因为系统做了些限制，权限不足啊 ~");
+                            + "\n这个出错原因呢，是因为系统做了些限制，权限不足啊 ~");
                     new AlertDialog.Builder(getContext())
                             .setTitle("出错啦！")
                             .setView(tv)
