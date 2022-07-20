@@ -489,20 +489,23 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<PackageInfo> packageInfos = new ArrayList<>(allPackageInfos);
                 synchronized (lock_apkSize) {
                     Map<String, Bitmap> appIcons = new HashMap<>();
-                    Map<String, Long> apkSize = new HashMap<>();
+                    Map<String, Long> apkSizeMap = new HashMap<>();
                     for (int i = 0, packageInfosSize = packageInfos.size(); i < packageInfosSize; i++) {
                         PackageInfo packageInfo = packageInfos.get(i);
                         loadAppInfos.load(packageInfo);
                         appIcons.put(packageInfo.packageName, loadAppInfos.getBitmapIcon());
-                        apkSize.put(packageInfo.packageName, loadAppInfos.getApkSize());
+                        long size = loadAppInfos.getApkSize();
+                        if (size > 0) {
+                            apkSizeMap.put(packageInfo.packageName, size);
+                        }
                         if (i == (Math.min(packageInfosSize, 18))) {
-                            LoadAppInfos.setApkSizeMap(apkSize);
+                            LoadAppInfos.setApkSizeMap(apkSizeMap);
                             LoadAppInfos.setAppIcons(appIcons);
                             runOnUiThread(() -> listAdapter.notifyDataSetChanged());
                         }
                     }
                     if (delaySync == 1)
-                        Collections.sort(getPackageInfos(), new MyAppComparator.ApkSizeComparator(apkSize));
+                        Collections.sort(getPackageInfos(), new MyAppComparator.ApkSizeComparator(apkSizeMap));
                 }
                 synchronized (lock_appSize) {
                     Map<String, Long> appSize = new HashMap<>();
@@ -511,7 +514,10 @@ public class MainActivity extends AppCompatActivity {
                         int flags = packageInfo.applicationInfo.flags;
                         if ((flags & ApplicationInfo.FLAG_SYSTEM) != 1 || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 128) {
                             loadAppInfos.load(packageInfo);
-                            appSize.put(packageInfo.packageName, loadAppInfos.getTotalSize());
+                            Long totalSize = loadAppInfos.getTotalSize();
+                            if (totalSize != null) {
+                                appSize.put(packageInfo.packageName, totalSize);
+                            }
                         }
                     }
                     if (delaySync == 2)

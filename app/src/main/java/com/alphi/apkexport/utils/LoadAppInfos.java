@@ -229,14 +229,11 @@ public final class LoadAppInfos {
         return length + length2;
     }
 
-    public long getTotalSize() {
-        if (appSizeMap != null) {
-            Long aLong = appSizeMap.get(packageInfo.packageName);
-            if (aLong != null)
-                return aLong;
-        }
+    public Long getTotalSize() {
+        if (appSizeMap != null)
+            return appSizeMap.get(packageInfo.packageName);
         GetAppSize getApkSize = new GetAppSize(context, packageInfo.packageName);
-        return getApkSize.totalSize;
+        return getApkSize.totalSize > 0 ? getApkSize.totalSize : null;
     }
 
     public String getSourceDir() {

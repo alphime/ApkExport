@@ -118,7 +118,7 @@ public class PermissionActivity extends AppCompatActivity {
     // Dialog
 
     public void requestStoragePermissionDialog(Context context) {
-        permissionDialog(getString(R.string.reqStorage), new PositiveEvent() {
+        permissionDialog(getString(R.string.reqStorage).replace("用户", "您"), new PositiveEvent() {
             @Override
             public void event() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -133,7 +133,7 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     public void requestAppUsagePermissionDialog(Context context) {
-        permissionDialog(getString(R.string.reqAppUsage), new PositiveEvent() {
+        permissionDialog(getString(R.string.reqAppUsage).replace("用户", "您"), new PositiveEvent() {
             @Override
             public void event() {
                 Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);

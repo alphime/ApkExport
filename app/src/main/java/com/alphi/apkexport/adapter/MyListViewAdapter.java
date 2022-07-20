@@ -97,7 +97,6 @@ public class MyListViewAdapter extends BaseAdapter {
         PackageInfo packageInfo = data.get(position);
         loadAppInfos.load(packageInfo);
 
-        String packageName = packageInfo.packageName;
         holder.imageView.setImageBitmap(loadAppInfos.getBitmapIcon());
         holder.tv_label.setText(loadAppInfos.getAppName());
 
@@ -144,7 +143,8 @@ public class MyListViewAdapter extends BaseAdapter {
             }
 
             holder.tv_apkSize.setText(apkSizeStr);
-            holder.tv_appSize.setText(getSize(loadAppInfos.getTotalSize()));
+            Long totalSize = loadAppInfos.getTotalSize();
+            holder.tv_appSize.setText(totalSize != null ? getSize(totalSize) : null);
             String dataTimeStr;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             if (!isShowFirstInstallTime) {
