@@ -5,14 +5,6 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file('C:\\Users\\alphi\\alphi.jks')
-            storePassword '204200'
-            keyAlias 'alphi'
-            keyPassword '204200'
-        }
-    }
     compileSdk 32
 
     defaultConfig {
@@ -20,7 +12,7 @@ android {
         minSdk 22
         targetSdk 33
         versionCode day()
-        versionName "1.28"
+        versionName "1.29"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
