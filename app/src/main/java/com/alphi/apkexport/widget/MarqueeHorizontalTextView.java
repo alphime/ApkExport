@@ -84,7 +84,7 @@ public class MarqueeHorizontalTextView extends TextView {
     public void onDraw(Canvas canvas) {
         // 获取字体度量
         final Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
-        // 计算基线
+        // 计算标准基线：视图高度 - 下方基线的最大距离 - 上方基线的最大距离
         int baseline = (getHeight() - fontMetrics.bottom - fontMetrics.top) / 2;
         if (textLength <= getWidth()) {
             canvas.drawText(text, 0, baseline, paint);
@@ -108,7 +108,7 @@ public class MarqueeHorizontalTextView extends TextView {
             return;
         }
         drawTextX += scrollSpeed;
-        //判断是否滚动结束
+        // 判断是否滚动结束
         if (drawTextX > textLength) {
             // 文本开头在屏幕最右边
             drawTextX = -getWidth();
