@@ -50,7 +50,7 @@ public class MarqueeHorizontalTextView extends TextView {
         if (TextUtils.isEmpty(text)) {
             return;
         }
-        // 获取文字的宽度
+        // 测量文字的宽度
         textLength = paint.measureText(text);
         isScrolling = true;
     }
