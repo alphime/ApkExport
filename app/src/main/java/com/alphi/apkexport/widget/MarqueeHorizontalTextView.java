@@ -42,7 +42,7 @@ public class MarqueeHorizontalTextView extends TextView {
     }
 
     private void initView() {
-        // 获取文本绘画属性
+        // 获取文本绘制属性
         paint = getPaint();
         // 文本颜色
         paint.setColor(getTextColors().getColorForState(getDrawableState(), 0));
@@ -50,7 +50,7 @@ public class MarqueeHorizontalTextView extends TextView {
         if (TextUtils.isEmpty(text)) {
             return;
         }
-        // 测量文字的宽度
+        // 测量文本的宽度
         textLength = paint.measureText(text);
         isScrolling = true;
     }
@@ -96,7 +96,7 @@ public class MarqueeHorizontalTextView extends TextView {
             return;
         }
         if (drawTextX == 0) {
-            // 当回到原点时，暂停一小会
+            // 当回到原点时，暂停(delayTime)一小会
             postDelayed(() -> {
                 // 赋值文本的横坐标为 -1
                 drawTextX = 1;
