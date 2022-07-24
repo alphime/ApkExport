@@ -114,6 +114,7 @@ public final class SearchAdapt implements TextView.OnEditorActionListener, TextW
     @Override
     public void afterTextChanged(Editable s) {
         Log.d("TAG", "afterTextChanged: " + s);
+        keyWord = s.toString();
         searchAdaptListener.searchMethod(s);
     }
 
