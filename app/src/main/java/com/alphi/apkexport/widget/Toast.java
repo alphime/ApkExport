@@ -5,6 +5,7 @@ package com.alphi.apkexport.widget;
     createDate: 2022/7/20
 */
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -15,10 +16,13 @@ import android.widget.TextView;
 import com.alphi.apkexport.R;
 
 public class Toast extends android.widget.Toast {
+    @SuppressLint("StaticFieldLeak")
+    private static Toast mToast;
 
     /**
      * Show the view or text notification for a short period of time.  This time
      * could be user-definable.  This is the default.
+     *
      * @see #setDuration
      */
     public static final int LENGTH_SHORT = 0;
@@ -26,6 +30,7 @@ public class Toast extends android.widget.Toast {
     /**
      * Show the view or text notification for a long period of time.  This time
      * could be user-definable.
+     *
      * @see #setDuration
      */
     public static final int LENGTH_LONG = 1;
@@ -41,6 +46,8 @@ public class Toast extends android.widget.Toast {
      */
     public Toast(Context context) {
         super(context);
+        if (mToast != null)
+            mToast.cancel();
         inflate = LayoutInflater.from(context).inflate(R.layout.toast_layout, null);
         setView(inflate);
     }
@@ -51,10 +58,16 @@ public class Toast extends android.widget.Toast {
         tv.setText(s);
     }
 
-    public static com.alphi.apkexport.widget.Toast makeText(Context context, CharSequence text, int duration) {
-        Toast toast = new Toast(context);
-        toast.setText(text);
-        toast.setDuration(duration);
-        return toast;
+    @Override
+    public void cancel() {
+        super.cancel();
+        mToast = null;
+    }
+
+    public static Toast makeText(Context context, CharSequence text, int duration) {
+        mToast = new Toast(context);
+        mToast.setText(text);
+        mToast.setDuration(duration);
+        return mToast;
     }
 }
