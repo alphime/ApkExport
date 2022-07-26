@@ -9,11 +9,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
 import com.alphi.apkexport.R;
+import com.google.android.material.snackbar.Snackbar;
 
 public class Toast extends android.widget.Toast {
     @SuppressLint("StaticFieldLeak")
@@ -36,6 +43,8 @@ public class Toast extends android.widget.Toast {
     public static final int LENGTH_LONG = 1;
 
     private final View inflate;
+    private final Handler mHandler;
+    private final Runnable runnable;
 
     /**
      * Construct an empty Toast object.  You must call {@link #setView} before you
@@ -46,10 +55,17 @@ public class Toast extends android.widget.Toast {
      */
     public Toast(Context context) {
         super(context);
-        if (mToast != null)
+        if (mToast != null) {
             mToast.cancel();
+        }
         inflate = LayoutInflater.from(context).inflate(R.layout.toast_layout, null);
         setView(inflate);
+        mHandler = new Handler();
+        runnable = () -> {
+            mToast = null;
+            Log.d("alphiToast", "clear memory ....");
+        };
+        mHandler.postDelayed(runnable, getDuration() == android.widget.Toast.LENGTH_SHORT ? 2000 : 3500);
     }
 
     @Override
@@ -61,6 +77,7 @@ public class Toast extends android.widget.Toast {
     @Override
     public void cancel() {
         super.cancel();
+        mHandler.removeCallbacks(mToast.runnable);
         mToast = null;
     }
 
