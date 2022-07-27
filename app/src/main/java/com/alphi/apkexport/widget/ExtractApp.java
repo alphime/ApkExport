@@ -19,7 +19,8 @@ import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.alphi.apkexport.widget.Toast;
+
+import com.alphi.apkexport.activity.PermissionActivity;
 
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
@@ -78,7 +79,11 @@ public class ExtractApp implements View.OnClickListener {
                                 if (save_rs == 1) {
                                     Toast.makeText(context, appLabel + " 安装包提取成功！\n保存路径在：/sdcard/" + ExtractFile.savePath, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(context, appLabel + " 安装包提取失败！\n没有存储权限或存储空间不足！", Toast.LENGTH_SHORT).show();
+                                    PermissionActivity.CheckPermission checkPermission = new PermissionActivity.CheckPermission(context);
+                                    if (!checkPermission.checkStoragePermission()) {
+                                        new PermissionActivity.PermissionDialog(context).requestStoragePermissionDialog();
+                                    } else
+                                        Toast.makeText(context, appLabel + " 安装包提取失败！\n没有存储权限或存储空间不足！", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

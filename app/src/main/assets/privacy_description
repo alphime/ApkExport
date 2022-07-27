@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<h1>Apk Export &nbsp;隐私说明</h1>
+	</head>
+	<body>
+		<p class="m">更新日期：2022年7月20日</p>
+		<h2>关于用户隐私</h2>
+
+		<div class="m">
+
+			<h4>一、本应用所收集用户信息、目的、方式和范围如下：</h4>
+
+			<p>1. 为了可以正常使用本APP的备份功能，本应用在Android 10以下的设备需要获取“存储空间”权限，在Android
+				10及以上的设备获取“访问所有文件”的权限，以让本APP将安装包文件写入到内部存储共享空间。
+			</p>
+
+			<p>2. 为了能够正常展示所有应用的安装包信息，本应用需要获取设备中的“软件安装列表信息”权限，用于所有应用程序列表及应用包信息。</p>
+
+			<p>3. 如果您的设备是Android 8.0及以上的版本系统，为提供用户在APP时能够方便查看APP占用设备空间的大小的功能，本应用需要获取“用户使用情况”权限。</p>
+
+			<!-- 5.因需要统计用户数量及应用崩溃信息，本应用集成了友盟+统计SDK，友盟+SDK需要收集您的设备Mac地址、唯一设备识别码（IMEI/android ID/IDFA/OPENUDID/GUID、SIM 卡 IMSI 信息）以提供统计分析服务。<br /> -->
+
+			<h4>二、关于用户隐私保护说明</h4>
+
+			<p>1. 本APP承诺会保护用户的隐私安全。</p>
+
+			<p>2. 本APP暂没有联网功能，不会存在上传用户隐私的行为。</p>
+
+			<h4>三、联系我们：</h4>
+
+			<p>如果您对本隐私政策有任何疑问，请通过发送邮件到 <a href="mailto:alphime@foxmail.com">alphime@foxmail.com</a> 与我们联系，我们会尽快答复您。</p>
+
+		</div>
+
+		<h2>关于敏感权限说明</h2>
+
+		<div class="box">
+			<P>1. 存储读写权限</P>
+			<p>(READ_EXTERNAL_STORAGE & WRITE_EXTERNAL_STORAGE)</p>
+			<p>该权限仅在Android 10以下的设备获取，用于将安装包写入到内部存储共享空间</p>
+		</div>
+
+		<div class="box">
+			<P>2. 获取所有应用包</P>
+			<p>(QUERY_ALL_PACKAGES)</p>
+			<p>该权限仅在Android 11以上的设备获取，用于获取已安装的所有应用包信息</p>
+		</div>
+
+		<div class="box">
+			<P>3. 用户使用情况</P>
+			<p>(PACKAGE_USAGE_STATS)</p>
+			<p>该权限仅在Android 8及以上的设备获取，用于读取应用占用设备的空间</p>
+		</div>
+
+		<div class="box">
+			<P>4. 访问所有文件</P>
+			<p>该权限仅在Android 10及以上的设备获取，用于将安装包写入到内部存储共享空间</p>
+		</div>
+
+		<div class="box">
+			<P>5. 请求卸载软件</P>
+			<p>提供长按列表多选里面的批量卸载用户APP的功能</p>
+		</div>
+	</body>
+
+	<style type="text/css">
+	    html{
+	        margin: 18px;
+	    }
+
+		.m {
+			margin-left: 18px;
+			margin-right: 18px;
+		}
+
+		.box {
+			margin: 18px 0;
+			padding: 6px 18px;
+			background-color: lightgray;
+		}
+	</style>
+</html>

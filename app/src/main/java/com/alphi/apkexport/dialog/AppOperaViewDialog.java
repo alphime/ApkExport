@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.alphi.apkexport.activity.PermissionActivity;
 import com.alphi.apkexport.widget.Toast;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -278,7 +280,11 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(getContext(), appLabel + " 安装包提取失败！\n请先授予存储权限！", Toast.LENGTH_SHORT).show();
+                                            PermissionActivity.CheckPermission checkPermission = new PermissionActivity.CheckPermission(getContext());
+                                            if (!checkPermission.checkStoragePermission()) {
+                                                new PermissionActivity.PermissionDialog(getContext()).requestStoragePermissionDialog();
+                                            } else
+                                                Toast.makeText(getContext(), appLabel + " 安装包提取失败！\n请先授予存储权限！", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 } else {

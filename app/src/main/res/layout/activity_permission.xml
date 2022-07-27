@@ -82,6 +82,13 @@
             android:layout_gravity="end" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/privacy_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_privacy_introduce"
+        android:textColor="@android:color/holo_blue_light" />
+
     <CheckBox
         android:id="@+id/cb_disableReminder"
         android:layout_width="wrap_content"

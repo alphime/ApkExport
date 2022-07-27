@@ -8,9 +8,11 @@
     <string name="search_reminder">请输入关键字</string>
     <string name="sysapp">系统应用</string>
     <string name="search_result_count">查询到%d个APP</string>
-    <string name="reqStorage">申请“存储空间”权限：为用户在使用备份APP的时候能将安装包保存在内部存储共享空间。</string>
-    <string name="reqAppUsage">申请“用户使用情况”权限：为提供用户在APP时能够方便查看APP占用设备空间的大小。</string>
-    <string name="req_queryAllApp">申请获取已安装的应用包信息权限：为用户在APP时能正常展示所有应用的安装包信息。</string>
+    <string name="reqStorage">申请“文件存储空间”权限</string>
+    <string name="reqAppUsage">申请“用户使用情况”权限</string>
+    <string name="req_queryAllApp">申请获取软件安装列表信息权限</string>
+    <string name="reqStorage2">申请“文件存储空间”权限\n用途：在使用本APP的备份功能够将安装包保存在内部存储共享空间</string>
+    <string name="reqAppUsage2">申请“用户使用情况”权限\n用途：在使用本APP时展示已安装的应用占用空间大小</string>
     <string name="entry_app">进入APP</string>
     <string name="welcome">欢迎使用</string>
     <string name="reminder">您在使用本App使用过程中可能需要以下权限：</string>
@@ -72,6 +74,9 @@
     <string name="fun_apk_import">Apk Import</string>
     <string name="fun_apk_import_introduce">一款可以安装Split Apk格式的工具</string>
     <string name="please_wait">尽情期待</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_privacy_introduce">隐私权限说明</string>
 
     <!-- Preference Titles -->
 
