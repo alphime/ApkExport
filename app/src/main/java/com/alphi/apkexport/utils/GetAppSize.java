@@ -63,7 +63,7 @@ public class GetAppSize {
         return appSize + dataSize;
     }
 
-    //Android8.0以下获取Apk大小方法：通过反射调用getPackageSizeInfo获取
+    //Android8.0以下获取Apk大小方法：通过反射调用getPackageSizeInfo获取，需配合注册GET_PACKAGE_SIZE权限
 
     private void handlePackageSizeInfo(Context context, String packageName) {
         PackageManager mPackageManager = context.getPackageManager();
