@@ -1,6 +1,7 @@
 package com.alphi.apkexport.dialog;
 /*
-  IDEA 2022/02/18
+  IDEA 2022/07/28
+  坑：Dialog的getContent()是通过ContextThemeWrapper包裹主Content而成，可通过getBaseContext()获取主Content！
  */
 
 import static com.alphi.apkexport.utils.AlphiFileUtil.getSize;
@@ -12,6 +13,7 @@ import static com.alphi.apkexport.utils.ZipUtil.readZip_IsExistFile;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;

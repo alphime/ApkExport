@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -139,11 +140,14 @@ public class PermissionActivity extends AppCompatActivity {
     public static class PermissionDialog {
         private final Context context;
 
+        /**
+         * @param context 已做出自动转换为ActivityContent处理
+         */
         public PermissionDialog(Context context) {
-            if (context instanceof ContextWrapper)
-                this.context = (((ContextWrapper) context).getBaseContext());
-            else
+            if (context instanceof Activity)
                 this.context = context;
+            else
+                this.context = (((ContextWrapper) context).getBaseContext());
         }
 
         public void requestStoragePermissionDialog() {
@@ -158,7 +162,7 @@ public class PermissionActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
                     }
                 }
-            }, context);
+            });
         }
 
         public void requestAppUsagePermissionDialog() {
@@ -169,10 +173,10 @@ public class PermissionActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
-            }, context);
+            });
         }
 
-        private static void permissionDialog(String description, PositiveEvent event, Context context) {
+        private void permissionDialog(String description, PositiveEvent event) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             dialog.setTitle("权限申请");
             TextView textView = new TextView(context);
