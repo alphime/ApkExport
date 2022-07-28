@@ -114,7 +114,7 @@ public class ExtractApp implements View.OnClickListener {
             } else {
                 File file = new File(oobPath);
                 if (!file.canRead()) {
-                    // Uri标识地址 + 路径
+                    // Uri标识地址 + ":" + 路径
                     Uri uriObb = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fobb/document/primary%3A" +
                             oobPath.replaceFirst(Environment.getExternalStorageDirectory().getPath() + File.separator, "").replaceAll("/", "%2F"));
                     try {
