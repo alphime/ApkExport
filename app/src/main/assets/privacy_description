@@ -51,13 +51,13 @@
 		<div class="box">
         	<P>3. 获取应用包大小</P>
         	<p>(GET_PACKAGE_SIZE)</p>
-        	<p>该权限仅在Android 8以下的设备申请获取，用于读取应用占用设备的空间</p>
+        	<p>该权限仅在Android 8以下的设备申请获取，用于读取应用占用设备的空间大小</p>
         </div>
 
 		<div class="box">
 			<P>4. 用户使用情况</P>
 			<p>(PACKAGE_USAGE_STATS)</p>
-			<p>该权限仅在Android 8及以上的设备申请获取，用于读取应用占用设备的空间</p>
+			<p>该权限仅在Android 8及以上的设备申请获取，用于读取应用占用设备的空间大小</p>
 		</div>
 
 		<div class="box">
