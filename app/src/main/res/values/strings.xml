@@ -11,8 +11,8 @@
     <string name="reqStorage">申请“文件存储空间”权限</string>
     <string name="reqAppUsage">申请“用户使用情况”权限</string>
     <string name="req_queryAllApp">申请获取软件安装列表信息权限</string>
-    <string name="reqStorage2">申请“文件存储空间”权限\n用途：在使用本APP的备份功能够将安装包保存在内部存储共享空间</string>
-    <string name="reqAppUsage2">申请“用户使用情况”权限\n用途：在使用本APP时展示已安装的应用占用空间大小</string>
+    <string name="reqStorage2">申请“文件存储空间”权限\n用途：使用备份功能够将安装包写入到内部存储共享空间</string>
+    <string name="reqAppUsage2">申请“用户使用情况”权限\n用途：在列表及操作对话框展示已安装的应用占用空间大小</string>
     <string name="entry_app">进入APP</string>
     <string name="welcome">欢迎使用</string>
     <string name="reminder">您在使用本App使用过程中可能需要以下权限：</string>
