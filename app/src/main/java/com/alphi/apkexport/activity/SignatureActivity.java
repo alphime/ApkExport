@@ -5,7 +5,6 @@ import static com.alphi.apkexport.utils.MD5Utils.getSignaturesMD5;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -27,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alphi.apkexport.R;
 import com.alphi.apkexport.adapter.SearchAdapt;
 import com.alphi.apkexport.utils.LoadAppInfos;
+import com.alphi.apkexport.widget.Toast;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -34,11 +34,10 @@ import java.util.List;
  */
 public class GetAppSize {
     private static final String TAG = GetAppSize.class.getSimpleName();
-    public long appSize;
-    public long dataSize;
-    public long cacheSize;
-    public long totalSize;
-    private boolean debug;
+    private long appSize;
+    private long dataSize;
+    private long cacheSize;
+    private final boolean debug = false;
 
     public GetAppSize(Context context, String packageName) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -48,6 +47,21 @@ public class GetAppSize {
         }
     }
 
+    public long getAppSize() {
+        return appSize;
+    }
+
+    public long getDataSize() {
+        return dataSize;
+    }
+
+    public long getCacheSize() {
+        return cacheSize;
+    }
+
+    public long getTotalSize() {
+        return appSize + dataSize;
+    }
 
     //Android8.0以下获取Apk大小方法：通过反射调用getPackageSizeInfo获取
 
@@ -68,6 +82,13 @@ public class GetAppSize {
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 e.printStackTrace();
             }
+            while (getTotalSize() == 0) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    // 等待系统回调
+                }
+            }
         }
     }
 
@@ -78,9 +99,8 @@ public class GetAppSize {
             cacheSize = pStats.cacheSize;
             dataSize = pStats.codeSize;
             appSize = pStats.dataSize;
-            totalSize = cacheSize + dataSize + appSize;
             if (debug) {
-                Log.d(TAG, succeeded + " cacheSize = " + cacheSize + "; appSize = " + dataSize + "; " + "appSize = " + appSize + "; totalSize = " + totalSize);
+                Log.d(TAG, succeeded + " cacheSize = " + cacheSize + "; appSize = " + dataSize + "; " + "appSize = " + appSize + "; totalSize = " + getTotalSize());
             }
         }
     }
@@ -99,10 +119,9 @@ public class GetAppSize {
                 appSize = storageStats.getAppBytes();
                 cacheSize = storageStats.getCacheBytes();
                 dataSize = storageStats.getDataBytes();
-                totalSize = dataSize + appSize;
                 if (debug) {
                     Log.d(TAG, "getAppBytes:" + Formatter.formatShortFileSize(context, appSize) + " getCacheBytes:" + Formatter.formatShortFileSize(context,
-                            cacheSize) + " getDataBytes:" + Formatter.formatShortFileSize(context, dataSize));
+                            cacheSize) + " getDataBytes:" + Formatter.formatShortFileSize(context, dataSize) + " totalSize" + getTotalSize());
                     Log.d(TAG, "getAppSizeForOreo: -----------------------------------------------");
                 }
             } catch (PackageManager.NameNotFoundException | IOException e) {

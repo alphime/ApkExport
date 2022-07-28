@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -20,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alphi.apkexport.R;
 import com.alphi.apkexport.utils.ExtractFile;
+import com.alphi.apkexport.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -65,6 +65,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_req_appUsage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -86,7 +87,7 @@
         android:id="@+id/privacy_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tv_privacy_introduce"
+        android:text="@string/tv_privacy_deal"
         android:textColor="@android:color/holo_blue_light" />
 
     <CheckBox

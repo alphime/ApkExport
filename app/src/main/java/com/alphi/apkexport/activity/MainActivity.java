@@ -27,7 +27,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.alphi.apkexport.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -46,6 +45,7 @@ import com.alphi.apkexport.utils.LoadAppInfos;
 import com.alphi.apkexport.utils.MD5Utils;
 import com.alphi.apkexport.utils.MyAppComparator;
 import com.alphi.apkexport.widget.ExtractApp;
+import com.alphi.apkexport.widget.Toast;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

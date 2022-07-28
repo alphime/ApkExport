@@ -3,7 +3,6 @@ package com.alphi.apkexport.utils;
 import static com.alphi.apkexport.utils.AlphiFileUtil.getLongSize;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -233,8 +232,11 @@ public final class LoadAppInfos {
         if (appSizeMap != null)
             return appSizeMap.get(packageInfo.packageName);
         GetAppSize getApkSize = new GetAppSize(context, packageInfo.packageName);
-        return getApkSize.totalSize > 0 ? getApkSize.totalSize : null;
+        long totalSize = getApkSize.getTotalSize();
+        return totalSize > 0 ? totalSize : null;
     }
+
+
 
     public String getSourceDir() {
         return applicationInfo.sourceDir;

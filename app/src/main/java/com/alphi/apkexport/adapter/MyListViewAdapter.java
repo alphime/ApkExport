@@ -143,8 +143,10 @@ public class MyListViewAdapter extends BaseAdapter {
             }
 
             holder.tv_apkSize.setText(apkSizeStr);
-            Long totalSize = loadAppInfos.getTotalSize();
-            holder.tv_appSize.setText(totalSize != null ? getSize(totalSize) : null);
+            if (!loadAppInfos.isSystemApp() || loadAppInfos.isUpdateSysApp()) {
+                Long totalSize = loadAppInfos.getTotalSize();
+                holder.tv_appSize.setText(totalSize != null ? getSize(totalSize) : null);
+            }
             String dataTimeStr;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             if (!isShowFirstInstallTime) {

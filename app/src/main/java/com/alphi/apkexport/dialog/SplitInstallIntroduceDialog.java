@@ -18,12 +18,12 @@ import android.provider.Settings;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.alphi.apkexport.R;
 import com.alphi.apkexport.widget.OnClickEvent;
+import com.alphi.apkexport.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 /**

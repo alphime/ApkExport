@@ -21,16 +21,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.view.ContextThemeWrapper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.alphi.apkexport.activity.fragment.PrivacyFragment;
-import com.alphi.apkexport.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +39,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
+import com.alphi.apkexport.activity.fragment.PrivacyFragment;
+import com.alphi.apkexport.widget.Toast;
 
 import java.util.List;
 
@@ -58,8 +58,11 @@ public class PermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
         SharedPreferences sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID + "_preferences", MODE_PRIVATE);
-        tv_req_appUsage_rs = findViewById(R.id.req_appUsage_rs);
         tv_req_storage_rs = findViewById(R.id.req_storage_rs);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            findViewById(R.id.lin_req_appUsage).setVisibility(View.GONE);
+        else
+            tv_req_appUsage_rs = findViewById(R.id.req_appUsage_rs);
         tv_req_queryAllApp_rs = findViewById(R.id.req_queryAllApp_rs);
         TextView tv_privacy = findViewById(R.id.privacy_link);
         tv_privacy.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -93,8 +96,8 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         CheckPermission checkPermission = new CheckPermission(this);
         PermissionDialog pd = new PermissionDialog(this);
         if (checkPermission.checkStoragePermission()) {
@@ -112,20 +115,21 @@ public class PermissionActivity extends AppCompatActivity {
             });
         }
 
-        if (checkPermission.checkAppUsagePermission()) {
-            tv_req_appUsage_rs.setText(R.string.accredit);
-            tv_req_appUsage_rs.setTextColor(Color.GREEN);
-            tv_req_appUsage_rs.setOnClickListener(null);
-        } else {
-            tv_req_appUsage_rs.setText(R.string.unauthorizedAndRequest);
-            tv_req_appUsage_rs.setTextColor(Color.RED);
-            tv_req_appUsage_rs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pd.requestAppUsagePermissionDialog();
-                }
-            });
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            if (checkPermission.checkAppUsagePermission()) {
+                tv_req_appUsage_rs.setText(R.string.accredit);
+                tv_req_appUsage_rs.setTextColor(Color.GREEN);
+                tv_req_appUsage_rs.setOnClickListener(null);
+            } else {
+                tv_req_appUsage_rs.setText(R.string.unauthorizedAndRequest);
+                tv_req_appUsage_rs.setTextColor(Color.RED);
+                tv_req_appUsage_rs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pd.requestAppUsagePermissionDialog();
+                    }
+                });
+            }
 
         if (checkPermission.checkQueryAllPackagesPermission()) {
             tv_req_queryAllApp_rs.setText(R.string.accredit);
@@ -135,6 +139,16 @@ public class PermissionActivity extends AppCompatActivity {
             tv_req_queryAllApp_rs.setTextColor(Color.RED);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
 
     // Dialog
     public static class PermissionDialog {

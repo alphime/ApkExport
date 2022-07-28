@@ -39,7 +39,7 @@
 		<div class="box">
 			<P>1. 存储读写权限</P>
 			<p>(READ_EXTERNAL_STORAGE & WRITE_EXTERNAL_STORAGE)</p>
-			<p>该权限仅在Android 10以下的设备获取，用于将安装包写入到内部存储共享空间</p>
+			<p>该权限仅在Android 10以下的设备申请获取，用于将安装包写入到内部存储共享空间</p>
 		</div>
 
 		<div class="box">
@@ -49,18 +49,25 @@
 		</div>
 
 		<div class="box">
-			<P>3. 用户使用情况</P>
+        	<P>3. 获取应用包大小</P>
+        	<p>(GET_PACKAGE_SIZE)</p>
+        	<p>该权限仅在Android 8以下的设备申请获取，用于读取应用占用设备的空间</p>
+        </div>
+
+		<div class="box">
+			<P>4. 用户使用情况</P>
 			<p>(PACKAGE_USAGE_STATS)</p>
-			<p>该权限仅在Android 8及以上的设备获取，用于读取应用占用设备的空间</p>
+			<p>该权限仅在Android 8及以上的设备申请获取，用于读取应用占用设备的空间</p>
 		</div>
 
 		<div class="box">
-			<P>4. 访问所有文件</P>
-			<p>该权限仅在Android 10及以上的设备获取，用于将安装包写入到内部存储共享空间</p>
+			<P>5. 访问所有文件</P>
+			<p>该权限仅在Android 10及以上的设备申请获取，用于将安装包写入到内部存储共享空间</p>
 		</div>
 
 		<div class="box">
-			<P>5. 请求卸载软件</P>
+			<P>6. 请求卸载软件</P>
+			<p>(REQUEST_DELETE_PACKAGES)</p>
 			<p>提供长按列表多选里面的批量卸载用户APP的功能</p>
 		</div>
 	</body>

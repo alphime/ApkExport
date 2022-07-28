@@ -13,7 +13,6 @@ import static com.alphi.apkexport.utils.ZipUtil.readZip_IsExistFile;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,18 +32,17 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.alphi.apkexport.activity.PermissionActivity;
-import com.alphi.apkexport.widget.Toast;
-
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.alphi.apkexport.BuildConfig;
 import com.alphi.apkexport.R;
+import com.alphi.apkexport.activity.PermissionActivity;
 import com.alphi.apkexport.utils.ExtractFile;
 import com.alphi.apkexport.utils.LoadAppInfos;
 import com.alphi.apkexport.utils.MD5Utils;
 import com.alphi.apkexport.widget.ExtractApp;
 import com.alphi.apkexport.widget.OnClickEvent;
+import com.alphi.apkexport.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
@@ -78,7 +76,7 @@ public class AppOperaViewDialog extends BottomSheetDialog {
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        // 暂停不变化
                     }
                 }
                 if (!isShowing()) return;
@@ -243,7 +241,11 @@ public class AppOperaViewDialog extends BottomSheetDialog {
             tv_minSupport.setVisibility(View.GONE);
         }
         if (!loadAppInfo.isSystemApp() || loadAppInfo.isUpdateSysApp()) {
-            tv_appsize.setText(getSize(loadAppInfo.getTotalSize()));
+            Long totalSize = loadAppInfo.getTotalSize();
+            if (totalSize != null)
+                tv_appsize.setText(getSize(totalSize));
+            else
+                tv_appsize.setText(null);
         }
         if (packageName.equals("ru.zdevs.zarchiver")) {
             Signature signature = loadAppInfo.getSignatures()[0];

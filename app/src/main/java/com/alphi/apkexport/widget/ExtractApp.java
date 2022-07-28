@@ -20,14 +20,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.alphi.apkexport.activity.PermissionActivity;
-
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.alphi.apkexport.R;
 import com.alphi.apkexport.activity.MainActivity;
+import com.alphi.apkexport.activity.PermissionActivity;
 import com.alphi.apkexport.utils.ExtractFile;
 
 import java.io.File;

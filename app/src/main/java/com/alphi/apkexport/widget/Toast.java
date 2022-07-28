@@ -9,18 +9,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
 import com.alphi.apkexport.R;
-import com.google.android.material.snackbar.Snackbar;
 
 public class Toast extends android.widget.Toast {
     @SuppressLint("StaticFieldLeak")

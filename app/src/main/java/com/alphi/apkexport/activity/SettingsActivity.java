@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.view.MenuItem;
-import com.alphi.apkexport.widget.Toast;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.AnimatorRes;
@@ -27,6 +26,7 @@ import com.alphi.apkexport.activity.fragment.MoreFunFragment;
 import com.alphi.apkexport.dialog.AuthorDialog;
 import com.alphi.apkexport.dialog.SplitInstallIntroduceDialog;
 import com.alphi.apkexport.utils.ExtractFile;
+import com.alphi.apkexport.widget.Toast;
 
 import java.io.File;
 
