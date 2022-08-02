@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                     loadAppInfos.load(packageInfo);
                     String pkgName = loadAppInfos.getPackageName().toString();
                     Map<String, String> appLabels = LoadAppInfos.getAppLabels();
-                    if (appLabels.containsKey(packageInfo.packageName) && appLabels.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
+                    if (appLabels != null && appLabels.containsKey(packageInfo.packageName) && appLabels.get(packageInfo.packageName).toLowerCase().contains(str.toLowerCase()) || searchPerformance[0] && pkgName.contains(s)) {
                         if (rs == null || this.search_time != search_time)
                             return;
                         rs.add(packageInfo);
